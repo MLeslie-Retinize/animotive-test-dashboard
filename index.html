@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Animotive Test Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1a1d27;
+      --surface2:  #22263a;
+      --border:    #2e3250;
+      --text:      #e2e8f0;
+      --muted:     #8892b0;
+      --pass:      #22c55e;
+      --fail:      #ef4444;
+      --flaky:     #f59e0b;
+      --skip:      #64748b;
+      --accent:    #6366f1;
+      --accent2:   #818cf8;
+      --radius:    8px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ---- Layout ---- */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header h1 { font-size: 18px; font-weight: 600; color: var(--text); }
+    header .subtitle { color: var(--muted); font-size: 13px; margin-left: auto; }
+
+    main { padding: 28px 32px; max-width: 1400px; margin: 0 auto; }
+
+    .section { margin-bottom: 36px; }
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    /* ---- Cards ---- */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+    }
+    .card .label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    .card .value { font-size: 26px; font-weight: 700; }
+    .card.pass .value  { color: var(--pass); }
+    .card.fail .value  { color: var(--fail); }
+    .card.flaky .value { color: var(--flaky); }
+    .card.skip .value  { color: var(--skip); }
+    .card.neutral .value { color: var(--text); }
+    .card.accent .value { color: var(--accent2); }
+
+    /* ---- Status badge ---- */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 9px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge.pass  { background: rgba(34,197,94,.15);  color: var(--pass); }
+    .badge.fail  { background: rgba(239,68,68,.15);  color: var(--fail); }
+    .badge.flaky { background: rgba(245,158,11,.15); color: var(--flaky); }
+    .badge.skip  { background: rgba(100,116,139,.15);color: var(--skip); }
+
+    /* ---- Charts grid ---- */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .chart-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .chart-box h3 { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 14px; text-transform: uppercase; letter-spacing: .06em; }
+    .chart-box.wide { grid-column: 1 / -1; }
+    .chart-container { position: relative; }
+    .chart-container canvas { max-width: 100%; }
+
+    /* ---- Table ---- */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: auto;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      background: var(--surface2);
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      white-space: nowrap;
+    }
+    tbody tr { border-top: 1px solid var(--border); }
+    tbody tr:hover { background: var(--surface2); }
+    tbody td { padding: 10px 14px; font-size: 13px; color: var(--text); }
+    tbody td.mono { font-family: monospace; font-size: 12px; color: var(--muted); }
+    tbody td a { color: var(--accent2); text-decoration: none; }
+    tbody td a:hover { text-decoration: underline; }
+
+    /* counts */
+    .count { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+    .count.pass  { background: rgba(34,197,94,.12);  color: var(--pass); }
+    .count.fail  { background: rgba(239,68,68,.12);  color: var(--fail); }
+    .count.flaky { background: rgba(245,158,11,.12); color: var(--flaky); }
+    .count.skip  { background: rgba(100,116,139,.12);color: var(--skip); }
+
+    /* pagination */
+    .pagination { display: flex; gap: 8px; align-items: center; margin-top: 14px; justify-content: flex-end; }
+    .pagination button {
+      background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+      padding: 5px 12px; border-radius: 5px; cursor: pointer; font-size: 13px;
+    }
+    .pagination button:hover { background: var(--border); }
+    .pagination button:disabled { opacity: .4; cursor: default; }
+    .pagination span { color: var(--muted); font-size: 13px; }
+
+    /* diff table */
+    .diff-section { margin-bottom: 22px; }
+    .diff-section h4 { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .06em; }
+
+    /* loading / empty */
+    .loading, .empty {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 120px; color: var(--muted); font-size: 13px;
+    }
+
+    /* range select */
+    .range-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .range-row label { font-size: 12px; color: var(--muted); }
+    .range-row select {
+      background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+      padding: 4px 8px; border-radius: 5px; font-size: 12px; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="24" height="24" rx="6" fill="#6366f1"/>
+    <path d="M7 17V9l5-3 5 3v8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M10 17v-4h4v4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <h1>Animotive Test Dashboard</h1>
+  <span class="subtitle" id="lastUpdated">Loading…</span>
+</header>
+
+<main>
+
+  <!-- Summary cards -->
+  <div class="section">
+    <div class="section-title">Latest Run Summary</div>
+    <div class="cards" id="summaryCards">
+      <div class="loading">Loading…</div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="section">
+    <div class="section-title">Trends &amp; Insights</div>
+    <div class="charts-grid">
+
+      <!-- Pass-rate trend -->
+      <div class="chart-box wide">
+        <h3>Pass Rate Trend</h3>
+        <div class="range-row">
+          <label for="trendRange">Show last</label>
+          <select id="trendRange">
+            <option value="14">14 runs</option>
+            <option value="30" selected>30 runs</option>
+            <option value="60">60 runs</option>
+            <option value="0">All</option>
+          </select>
+        </div>
+        <div class="chart-container" style="height:220px">
+          <canvas id="trendChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Top failing tests -->
+      <div class="chart-box">
+        <h3>Top Failing Tests</h3>
+        <div class="chart-container" style="height:300px">
+          <canvas id="failChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Flaky tests -->
+      <div class="chart-box">
+        <h3>Flaky Tests</h3>
+        <div class="chart-container" style="height:300px">
+          <canvas id="flakyChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Per-spec pass rate -->
+      <div class="chart-box wide">
+        <h3>Pass Rate by Spec File</h3>
+        <div class="chart-container" style="height:260px">
+          <canvas id="specChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Failure diff -->
+  <div class="section">
+    <div class="section-title">Failure Diff — Latest vs Previous Run</div>
+    <div id="diffSection">
+      <div class="loading">Loading…</div>
+    </div>
+  </div>
+
+  <!-- Run history table -->
+  <div class="section">
+    <div class="section-title">Run History</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Branch</th>
+            <th>Commit</th>
+            <th>Status</th>
+            <th>Passed</th>
+            <th>Failed</th>
+            <th>Flaky</th>
+            <th>Skipped</th>
+            <th>Total</th>
+            <th>Report</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody">
+          <tr><td colspan="10" class="loading">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+
+</main>
+
+<script>
+// ---------------------------------------------------------------------------
+// State
+// ---------------------------------------------------------------------------
+let allRuns  = [];   // from data/index.json — lightweight metadata only
+let runCache = {};   // { id: fullRunObject } — loaded lazily from data/runs/*.json
+
+const PAGE_SIZE = 20;
+let currentPage = 0;
+
+let trendChartInst  = null;
+let failChartInst   = null;
+let flakyChartInst  = null;
+let specChartInst   = null;
+
+// ---------------------------------------------------------------------------
+// Boot
+// ---------------------------------------------------------------------------
+(async function init() {
+  try {
+    const res = await fetch('data/index.json');
+    allRuns = await res.json();
+    // Sort newest-first
+    allRuns.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  } catch (e) {
+    allRuns = [];
+  }
+
+  renderSummaryCards();
+  renderHistory();
+  renderPagination();
+
+  // Charts and diff need full run data for at least the last N runs
+  const recentIds = allRuns.slice(0, 60).map(r => r.id);
+  await loadRunFiles(recentIds);
+
+  renderTrendChart();
+  renderFailChart();
+  renderFlakyChart();
+  renderSpecChart();
+  renderDiff();
+
+  document.getElementById('lastUpdated').textContent =
+    allRuns.length > 0
+      ? `Last updated ${fmtDate(allRuns[0].timestamp)}`
+      : 'No runs yet';
+
+  document.getElementById('trendRange').addEventListener('change', renderTrendChart);
+})();
+
+// ---------------------------------------------------------------------------
+// Data loading
+// ---------------------------------------------------------------------------
+async function loadRunFile(id) {
+  if (runCache[id]) return runCache[id];
+  try {
+    const res = await fetch(`data/runs/${id}.json`);
+    const data = await res.json();
+    runCache[id] = data;
+    return data;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function loadRunFiles(ids) {
+  await Promise.all(ids.map(id => loadRunFile(id)));
+}
+
+// ---------------------------------------------------------------------------
+// Summary Cards
+// ---------------------------------------------------------------------------
+function renderSummaryCards() {
+  const container = document.getElementById('summaryCards');
+  if (allRuns.length === 0) {
+    container.innerHTML = '<div class="empty">No runs recorded yet.</div>';
+    return;
+  }
+
+  const latest = allRuns[0];
+  const s = latest.stats;
+  const passRate = s.total > 0 ? ((s.passed + s.flaky) / s.total * 100).toFixed(1) : '—';
+
+  container.innerHTML = `
+    <div class="card neutral">
+      <div class="label">Total Runs</div>
+      <div class="value">${allRuns.length}</div>
+    </div>
+    <div class="card ${latest.status === 'passed' ? 'pass' : 'fail'}">
+      <div class="label">Latest Status</div>
+      <div class="value">${latest.status === 'passed' ? '✓ Pass' : '✗ Fail'}</div>
+    </div>
+    <div class="card accent">
+      <div class="label">Latest Pass Rate</div>
+      <div class="value">${passRate}%</div>
+    </div>
+    <div class="card pass">
+      <div class="label">Passed</div>
+      <div class="value">${s.passed}</div>
+    </div>
+    <div class="card fail">
+      <div class="label">Failed</div>
+      <div class="value">${s.failed}</div>
+    </div>
+    <div class="card flaky">
+      <div class="label">Flaky</div>
+      <div class="value">${s.flaky}</div>
+    </div>
+    <div class="card skip">
+      <div class="label">Skipped</div>
+      <div class="value">${s.skipped}</div>
+    </div>
+    <div class="card neutral">
+      <div class="label">Total Tests</div>
+      <div class="value">${s.total}</div>
+    </div>
+  `;
+}
+
+// ---------------------------------------------------------------------------
+// Run History Table
+// ---------------------------------------------------------------------------
+function renderHistory() {
+  const tbody = document.getElementById('historyBody');
+  if (allRuns.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="10" class="empty">No runs recorded yet.</td></tr>';
+    return;
+  }
+
+  const start = currentPage * PAGE_SIZE;
+  const slice = allRuns.slice(start, start + PAGE_SIZE);
+
+  tbody.innerHTML = slice.map(r => {
+    const s = r.stats;
+    const link = r.workflowUrl
+      ? `<a href="${esc(r.workflowUrl)}" target="_blank" rel="noopener">View ↗</a>`
+      : '—';
+    return `
+      <tr>
+        <td>${fmtDate(r.timestamp)}</td>
+        <td>${esc(r.branch)}</td>
+        <td class="mono">${esc(r.commit.slice(0,7))}</td>
+        <td><span class="badge ${r.status}">${r.status}</span></td>
+        <td><span class="count pass">${s.passed}</span></td>
+        <td><span class="count fail">${s.failed}</span></td>
+        <td><span class="count flaky">${s.flaky}</span></td>
+        <td><span class="count skip">${s.skipped}</span></td>
+        <td>${s.total}</td>
+        <td>${link}</td>
+      </tr>`;
+  }).join('');
+}
+
+function renderPagination() {
+  const pg = document.getElementById('pagination');
+  const total = Math.ceil(allRuns.length / PAGE_SIZE);
+  if (total <= 1) { pg.innerHTML = ''; return; }
+
+  pg.innerHTML = `
+    <button id="pgPrev" ${currentPage === 0 ? 'disabled' : ''}>‹ Prev</button>
+    <span>Page ${currentPage + 1} of ${total}</span>
+    <button id="pgNext" ${currentPage >= total - 1 ? 'disabled' : ''}>Next ›</button>
+  `;
+  pg.querySelector('#pgPrev')?.addEventListener('click', () => { currentPage--; renderHistory(); renderPagination(); });
+  pg.querySelector('#pgNext')?.addEventListener('click', () => { currentPage++; renderHistory(); renderPagination(); });
+}
+
+// ---------------------------------------------------------------------------
+// Pass-rate Trend Chart
+// ---------------------------------------------------------------------------
+function renderTrendChart() {
+  const rangeVal = parseInt(document.getElementById('trendRange').value, 10);
+  const runs = rangeVal > 0 ? allRuns.slice(0, rangeVal) : allRuns;
+  const sorted = [...runs].reverse(); // chronological for chart x-axis
+
+  const labels = sorted.map(r => r.date);
+  const data   = sorted.map(r => {
+    const s = r.stats;
+    return s.total > 0 ? +((s.passed + s.flaky) / s.total * 100).toFixed(1) : 0;
+  });
+
+  if (trendChartInst) trendChartInst.destroy();
+  trendChartInst = new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Pass Rate %',
+        data,
+        borderColor: '#6366f1',
+        backgroundColor: 'rgba(99,102,241,.12)',
+        tension: 0.3,
+        fill: true,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+      }]
+    },
+    options: chartOptions({ yMax: 100, yLabel: '%', suggestedMin: 0 }),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Top Failing Tests Chart
+// ---------------------------------------------------------------------------
+function renderFailChart() {
+  const counts = {};
+  for (const id of Object.keys(runCache)) {
+    const run = runCache[id];
+    if (!run) continue;
+    for (const t of run.tests) {
+      if (t.status === 'failed' || t.status === 'timedOut') {
+        counts[t.fullTitle] = (counts[t.fullTitle] || 0) + 1;
+      }
+    }
+  }
+
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 12);
+  if (sorted.length === 0) {
+    document.getElementById('failChart').parentElement.innerHTML =
+      '<div class="empty" style="height:300px">No failing tests found.</div>';
+    return;
+  }
+
+  const labels = sorted.map(([k]) => truncate(k, 55));
+  const data   = sorted.map(([, v]) => v);
+
+  if (failChartInst) failChartInst.destroy();
+  failChartInst = new Chart(document.getElementById('failChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Failure count',
+        data,
+        backgroundColor: 'rgba(239,68,68,.7)',
+        borderRadius: 4,
+      }]
+    },
+    options: hBarOptions('Failures'),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Flaky Tests Chart
+// ---------------------------------------------------------------------------
+function renderFlakyChart() {
+  const counts = {};
+  for (const id of Object.keys(runCache)) {
+    const run = runCache[id];
+    if (!run) continue;
+    for (const t of run.tests) {
+      if (t.flaky) {
+        counts[t.fullTitle] = (counts[t.fullTitle] || 0) + 1;
+      }
+    }
+  }
+
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 12);
+  if (sorted.length === 0) {
+    document.getElementById('flakyChart').parentElement.innerHTML =
+      '<div class="empty" style="height:300px">No flaky tests detected.</div>';
+    return;
+  }
+
+  const labels = sorted.map(([k]) => truncate(k, 55));
+  const data   = sorted.map(([, v]) => v);
+
+  if (flakyChartInst) flakyChartInst.destroy();
+  flakyChartInst = new Chart(document.getElementById('flakyChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Flaky count',
+        data,
+        backgroundColor: 'rgba(245,158,11,.7)',
+        borderRadius: 4,
+      }]
+    },
+    options: hBarOptions('Times flaky'),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Per-spec Pass Rate Chart
+// ---------------------------------------------------------------------------
+function renderSpecChart() {
+  const specPass  = {};
+  const specTotal = {};
+
+  for (const id of Object.keys(runCache)) {
+    const run = runCache[id];
+    if (!run) continue;
+    for (const t of run.tests) {
+      const file = t.file || 'unknown';
+      specTotal[file] = (specTotal[file] || 0) + 1;
+      if (t.status === 'passed' || t.flaky) {
+        specPass[file] = (specPass[file] || 0) + 1;
+      }
+    }
+  }
+
+  const files = Object.keys(specTotal).sort();
+  if (files.length === 0) {
+    document.getElementById('specChart').parentElement.innerHTML =
+      '<div class="empty">No spec data available.</div>';
+    return;
+  }
+
+  const labels = files.map(f => f.split('/').pop()); // just the filename
+  const data   = files.map(f => {
+    const tot = specTotal[f] || 0;
+    const pas = specPass[f]  || 0;
+    return tot > 0 ? +(pas / tot * 100).toFixed(1) : 0;
+  });
+  const colors = data.map(v => v >= 90 ? 'rgba(34,197,94,.7)' : v >= 60 ? 'rgba(245,158,11,.7)' : 'rgba(239,68,68,.7)');
+
+  if (specChartInst) specChartInst.destroy();
+  specChartInst = new Chart(document.getElementById('specChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Pass rate %',
+        data,
+        backgroundColor: colors,
+        borderRadius: 4,
+      }]
+    },
+    options: hBarOptions('%', { xMax: 100 }),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Failure Diff
+// ---------------------------------------------------------------------------
+function renderDiff() {
+  const container = document.getElementById('diffSection');
+  const ids = allRuns.map(r => r.id);
+
+  const latestRun   = ids[0] ? runCache[ids[0]] : null;
+  const previousRun = ids[1] ? runCache[ids[1]] : null;
+
+  if (!latestRun) {
+    container.innerHTML = '<div class="empty">No run data loaded yet.</div>';
+    return;
+  }
+  if (!previousRun) {
+    container.innerHTML = '<div class="empty">Need at least 2 runs for a diff.</div>';
+    return;
+  }
+
+  const latestFailed   = new Set(latestRun.tests.filter(t => t.status === 'failed' || t.status === 'timedOut').map(t => t.fullTitle));
+  const previousFailed = new Set(previousRun.tests.filter(t => t.status === 'failed' || t.status === 'timedOut').map(t => t.fullTitle));
+
+  const newFailures       = [...latestFailed].filter(t => !previousFailed.has(t));
+  const persistentFails   = [...latestFailed].filter(t => previousFailed.has(t));
+  const recovered         = [...previousFailed].filter(t => !latestFailed.has(t));
+
+  function diffTable(items, cls, emptyMsg) {
+    if (items.length === 0) return `<div class="empty" style="min-height:50px;font-size:12px;">${emptyMsg}</div>`;
+    return `
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Test</th></tr></thead>
+          <tbody>
+            ${items.map(t => `<tr><td><span class="badge ${cls}">${cls}</span> ${esc(t)}</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  container.innerHTML = `
+    <div class="diff-section">
+      <h4>🔴 New Failures (${newFailures.length}) — failed now, passed last run</h4>
+      ${diffTable(newFailures, 'fail', 'No new failures.')}
+    </div>
+    <div class="diff-section">
+      <h4>🟠 Persistent Failures (${persistentFails.length}) — failed in both runs</h4>
+      ${diffTable(persistentFails, 'fail', 'No persistent failures.')}
+    </div>
+    <div class="diff-section">
+      <h4>🟢 Recovered (${recovered.length}) — passed now, failed last run</h4>
+      ${diffTable(recovered, 'pass', 'No recoveries.')}
+    </div>
+  `;
+}
+
+// ---------------------------------------------------------------------------
+// Chart helpers
+// ---------------------------------------------------------------------------
+const CHART_DEFAULTS = {
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { grid: { color: 'rgba(46,50,80,.5)' }, ticks: { color: '#8892b0' } },
+    y: { grid: { color: 'rgba(46,50,80,.5)' }, ticks: { color: '#8892b0' } },
+  },
+  animation: false,
+  maintainAspectRatio: false,
+  responsive: true,
+};
+
+function chartOptions({ yMax, yLabel, suggestedMin } = {}) {
+  return {
+    ...CHART_DEFAULTS,
+    scales: {
+      ...CHART_DEFAULTS.scales,
+      y: {
+        ...CHART_DEFAULTS.scales.y,
+        max: yMax,
+        suggestedMin: suggestedMin ?? undefined,
+        ticks: { color: '#8892b0', callback: v => yLabel ? v + yLabel : v },
+      },
+    },
+  };
+}
+
+function hBarOptions(xLabel, { xMax } = {}) {
+  return {
+    ...CHART_DEFAULTS,
+    indexAxis: 'y',
+    scales: {
+      x: {
+        grid: { color: 'rgba(46,50,80,.5)' },
+        ticks: { color: '#8892b0', callback: v => xLabel === '%' ? v + '%' : v },
+        max: xMax,
+      },
+      y: {
+        grid: { color: 'rgba(46,50,80,.5)' },
+        ticks: { color: '#8892b0', font: { size: 11 } },
+      },
+    },
+    animation: false,
+    maintainAspectRatio: false,
+    responsive: true,
+    plugins: { legend: { display: false } },
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Utilities
+// ---------------------------------------------------------------------------
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+    + ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+}
+
+function esc(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function truncate(str, n) {
+  return str.length > n ? '…' + str.slice(-(n - 1)) : str;
+}
+</script>
+</body>
+</html>
