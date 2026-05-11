@@ -1,82 +1,45 @@
 [
   {
-    "id": "2026-05-11-25665383001",
-    "date": "2026-05-11",
-<<<<<<< HEAD
-    "timestamp": "2026-05-11T11:05:26.761Z",
-    "branch": "main",
-    "commit": "984fefc3dfc766b5d1bb5c5ea927bbe7d37b888e",
-    "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/25665383001",
-    "status": "failed",
-    "stats": {
-      "total": 86,
-      "passed": 76,
-      "failed": 4,
-      "flaky": 1,
-      "skipped": 5
-=======
-    "timestamp": "2026-05-11T10:44:14Z",
-    "branch": "main",
-    "commit": "984fefc3dfc766b5d1bb5c5ea927bbe7d37b888e",
-    "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/25665383001",
-    "status": "passed",
-    "stats": {
-      "total": 0,
-      "passed": 0,
-      "failed": 0,
-      "flaky": 0,
-      "skipped": 0
->>>>>>> parent of f9d16c0 (Revert "added test runs from the last month and removed dummt data")
-    }
-  },
-  {
-    "id": "2026-05-11-25658253500",
-    "date": "2026-05-11",
-<<<<<<< HEAD
-    "timestamp": "2026-05-11T08:30:38.533Z",
-=======
-    "timestamp": "2026-05-11T08:10:27Z",
->>>>>>> parent of f9d16c0 (Revert "added test runs from the last month and removed dummt data")
-    "branch": "main",
-    "commit": "3314d6db2afe2434e78311f2f96d297083c70176",
-    "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/25658253500",
-    "status": "passed",
-    "stats": {
-<<<<<<< HEAD
-      "total": 86,
-      "passed": 0,
-      "failed": 0,
-      "flaky": 0,
-      "skipped": 5
-=======
-      "total": 0,
-      "passed": 0,
-      "failed": 0,
-      "flaky": 0,
-      "skipped": 0
->>>>>>> parent of f9d16c0 (Revert "added test runs from the last month and removed dummt data")
-    }
-  },
-  {
-    "id": "2026-05-08-25563232350",
+    "id": "2026-05-08-25563225679",
     "date": "2026-05-08",
-<<<<<<< HEAD
-    "timestamp": "2026-05-08T16:02:18.025Z",
-=======
-    "timestamp": "2026-05-08T15:10:05Z",
->>>>>>> parent of f9d16c0 (Revert "added test runs from the last month and removed dummt data")
-    "branch": "main",
-    "commit": "3314d6db2afe2434e78311f2f96d297083c70176",
-    "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/25563232350",
+    "timestamp": "2026-05-08T15:09:58Z",
+    "branch": "development",
+    "commit": "c1af3eb800633c2c5e496fac1bacb0095011637e",
+    "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/25563225679",
     "status": "passed",
     "stats": {
-<<<<<<< HEAD
-      "total": 86,
+      "total": 0,
       "passed": 0,
       "failed": 0,
       "flaky": 0,
-      "skipped": 5
-=======
+      "skipped": 0
+    }
+  },
+  {
+    "id": "2026-05-08-25563225679",
+    "date": "2026-05-08",
+    "timestamp": "2026-05-08T15:09:58Z",
+    "branch": "development",
+    "commit": "c1af3eb800633c2c5e496fac1bacb0095011637e",
+    "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/25563225679",
+    "status": "passed",
+    "stats": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "flaky": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "id": "2026-05-08-25563225679",
+    "date": "2026-05-08",
+    "timestamp": "2026-05-08T15:09:58Z",
+    "branch": "development",
+    "commit": "c1af3eb800633c2c5e496fac1bacb0095011637e",
+    "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/25563225679",
+    "status": "passed",
+    "stats": {
       "total": 0,
       "passed": 0,
       "failed": 0,
@@ -114,28 +77,9 @@
       "failed": 0,
       "flaky": 0,
       "skipped": 0
->>>>>>> parent of f9d16c0 (Revert "added test runs from the last month and removed dummt data")
     }
   },
   {
-    "id": "2026-05-08-sample",
-    "date": "2026-05-08",
-    "timestamp": "2026-05-08T07:15:00Z",
-    "branch": "main",
-    "commit": "abc1234def5678",
-    "workflowUrl": "https://github.com/example/animotive_playwright_tests/actions/runs/999",
-    "status": "failed",
-    "stats": {
-      "total": 42,
-      "passed": 36,
-      "failed": 3,
-      "flaky": 2,
-      "skipped": 1
-    }
-  },
-  {
-<<<<<<< HEAD
-=======
     "id": "2026-05-07-25483338358",
     "date": "2026-05-07",
     "timestamp": "2026-05-07T07:54:48Z",
@@ -150,25 +94,6 @@
       "flaky": 0,
       "skipped": 0
     }
-  },
-  {
->>>>>>> parent of f9d16c0 (Revert "added test runs from the last month and removed dummt data")
-    "id": "2026-05-07-prev",
-    "date": "2026-05-07",
-    "timestamp": "2026-05-07T07:12:00Z",
-    "branch": "main",
-    "commit": "aaa0001bbb0002",
-    "workflowUrl": "https://github.com/example/animotive_playwright_tests/actions/runs/998",
-    "status": "passed",
-    "stats": {
-      "total": 42,
-      "passed": 39,
-      "failed": 0,
-      "flaky": 2,
-      "skipped": 1
-    }
-<<<<<<< HEAD
-=======
   },
   {
     "id": "2026-05-06-25428620550",
@@ -585,6 +510,5 @@
       "flaky": 0,
       "skipped": 0
     }
->>>>>>> parent of f9d16c0 (Revert "added test runs from the last month and removed dummt data")
   }
 ]
