@@ -1,12 +1,17 @@
 {
   "id": "2026-05-08-25563232350",
   "date": "2026-05-08",
+<<<<<<< HEAD
   "timestamp": "2026-05-08T16:02:18.025Z",
+=======
+  "timestamp": "2026-05-08T15:10:05Z",
+>>>>>>> parent of f9d16c0 (Revert "added test runs from the last month and removed dummt data")
   "branch": "main",
   "commit": "3314d6db2afe2434e78311f2f96d297083c70176",
   "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/25563232350",
   "status": "passed",
   "stats": {
+<<<<<<< HEAD
     "total": 86,
     "passed": 0,
     "failed": 0,
@@ -875,4 +880,13 @@
       "errorMessage": null
     }
   ]
+=======
+    "total": 0,
+    "passed": 0,
+    "failed": 0,
+    "flaky": 0,
+    "skipped": 0
+  },
+  "tests": []
+>>>>>>> parent of f9d16c0 (Revert "added test runs from the last month and removed dummt data")
 }
