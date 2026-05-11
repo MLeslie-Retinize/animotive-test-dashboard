@@ -1,5 +1,53 @@
 [
   {
+    "id": "2026-05-11-25665383001",
+    "date": "2026-05-11",
+    "timestamp": "2026-05-11T11:05:26.761Z",
+    "branch": "main",
+    "commit": "984fefc3dfc766b5d1bb5c5ea927bbe7d37b888e",
+    "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/25665383001",
+    "status": "failed",
+    "stats": {
+      "total": 86,
+      "passed": 76,
+      "failed": 4,
+      "flaky": 1,
+      "skipped": 5
+    }
+  },
+  {
+    "id": "2026-05-11-25658253500",
+    "date": "2026-05-11",
+    "timestamp": "2026-05-11T08:30:38.533Z",
+    "branch": "main",
+    "commit": "3314d6db2afe2434e78311f2f96d297083c70176",
+    "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/25658253500",
+    "status": "passed",
+    "stats": {
+      "total": 86,
+      "passed": 0,
+      "failed": 0,
+      "flaky": 0,
+      "skipped": 5
+    }
+  },
+  {
+    "id": "2026-05-08-25563232350",
+    "date": "2026-05-08",
+    "timestamp": "2026-05-08T16:02:18.025Z",
+    "branch": "main",
+    "commit": "3314d6db2afe2434e78311f2f96d297083c70176",
+    "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/25563232350",
+    "status": "passed",
+    "stats": {
+      "total": 86,
+      "passed": 0,
+      "failed": 0,
+      "flaky": 0,
+      "skipped": 5
+    }
+  },
+  {
     "id": "2026-05-08-sample",
     "date": "2026-05-08",
     "timestamp": "2026-05-08T07:15:00Z",
@@ -7,7 +55,13 @@
     "commit": "abc1234def5678",
     "workflowUrl": "https://github.com/example/animotive_playwright_tests/actions/runs/999",
     "status": "failed",
-    "stats": { "total": 42, "passed": 36, "failed": 3, "flaky": 2, "skipped": 1 }
+    "stats": {
+      "total": 42,
+      "passed": 36,
+      "failed": 3,
+      "flaky": 2,
+      "skipped": 1
+    }
   },
   {
     "id": "2026-05-07-prev",
@@ -17,6 +71,12 @@
     "commit": "aaa0001bbb0002",
     "workflowUrl": "https://github.com/example/animotive_playwright_tests/actions/runs/998",
     "status": "passed",
-    "stats": { "total": 42, "passed": 39, "failed": 0, "flaky": 2, "skipped": 1 }
+    "stats": {
+      "total": 42,
+      "passed": 39,
+      "failed": 0,
+      "flaky": 2,
+      "skipped": 1
+    }
   }
 ]
