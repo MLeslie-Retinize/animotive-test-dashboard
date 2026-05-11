@@ -1,0 +1,27 @@
+{
+  "id": "2026-05-07-prev",
+  "date": "2026-05-07",
+  "timestamp": "2026-05-07T07:12:00Z",
+  "branch": "main",
+  "commit": "aaa0001bbb0002",
+  "workflowUrl": "https://github.com/example/animotive_playwright_tests/actions/runs/998",
+  "status": "passed",
+  "stats": { "total": 42, "passed": 39, "failed": 0, "flaky": 2, "skipped": 1 },
+  "tests": [
+    {"title":"should login with valid credentials","fullTitle":"Login > should login with valid credentials","file":"tests/specs/login_to_animotive_dev.spec.ts","status":"passed","duration":1800,"retries":0,"flaky":false,"errorMessage":null},
+    {"title":"should show error for invalid credentials","fullTitle":"Login > should show error for invalid credentials","file":"tests/specs/login_to_animotive_dev.spec.ts","status":"passed","duration":1150,"retries":0,"flaky":false,"errorMessage":null},
+    {"title":"should create a new project","fullTitle":"Projects > should create a new project","file":"tests/specs/create_project.spec.ts","status":"passed","duration":3100,"retries":0,"flaky":false,"errorMessage":null},
+    {"title":"should display project list","fullTitle":"Projects > should display project list","file":"tests/specs/create_project.spec.ts","status":"passed","duration":2050,"retries":0,"flaky":false,"errorMessage":null},
+    {"title":"should update project name","fullTitle":"Project Settings > should update project name","file":"tests/specs/project_settings.spec.ts","status":"passed","duration":2700,"retries":0,"flaky":false,"errorMessage":null},
+    {"title":"should update project description","fullTitle":"Project Settings > should update project description","file":"tests/specs/project_settings.spec.ts","status":"passed","duration":2600,"retries":1,"flaky":true,"errorMessage":null},
+    {"title":"should create a scene","fullTitle":"Scenes > should create a scene","file":"tests/specs/scene_tests.spec.ts","status":"passed","duration":4000,"retries":0,"flaky":false,"errorMessage":null},
+    {"title":"should rename a scene","fullTitle":"Scenes > should rename a scene","file":"tests/specs/scene_tests.spec.ts","status":"passed","duration":3200,"retries":0,"flaky":false,"errorMessage":null},
+    {"title":"should invite a team member","fullTitle":"Team > should invite a team member","file":"tests/specs/team_and_invitation tests.spec.ts","status":"passed","duration":3400,"retries":0,"flaky":false,"errorMessage":null},
+    {"title":"should remove a team member","fullTitle":"Team > should remove a team member","file":"tests/specs/team_and_invitation tests.spec.ts","status":"passed","duration":2800,"retries":1,"flaky":true,"errorMessage":null},
+    {"title":"should update email","fullTitle":"Account Settings > should update email","file":"tests/specs/account_settings_tests.spec.ts","status":"passed","duration":2100,"retries":0,"flaky":false,"errorMessage":null},
+    {"title":"should update password","fullTitle":"Account Settings > should update password","file":"tests/specs/account_settings_tests.spec.ts","status":"passed","duration":2900,"retries":0,"flaky":false,"errorMessage":null},
+    {"title":"should skip tutorial","fullTitle":"Getting Started > should skip tutorial","file":"tests/specs/getting_started_tests.spec.ts","status":"skipped","duration":0,"retries":0,"flaky":false,"errorMessage":null},
+    {"title":"should navigate to website","fullTitle":"Kimodo Site > should navigate to website","file":"tests/specs/kimodo_site_tests.spec.ts","status":"passed","duration":1450,"retries":0,"flaky":false,"errorMessage":null},
+    {"title":"should verify all nav links","fullTitle":"Kimodo Site > should verify all nav links","file":"tests/specs/kimodo_site_tests.spec.ts","status":"passed","duration":3000,"retries":0,"flaky":false,"errorMessage":null}
+  ]
+}
