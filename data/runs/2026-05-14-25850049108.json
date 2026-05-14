@@ -1,0 +1,868 @@
+{
+  "id": "2026-05-14-25850049108",
+  "date": "2026-05-14",
+  "timestamp": "2026-05-14T08:39:59.651Z",
+  "branch": "main",
+  "commit": "8d39bbb64b964d85fe9a18a335d3ec1b1467a0be",
+  "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/25850049108",
+  "status": "passed",
+  "stats": {
+    "total": 85,
+    "passed": 82,
+    "failed": 0,
+    "flaky": 0,
+    "skipped": 3
+  },
+  "tests": [
+    {
+      "title": "log out user from settings page",
+      "fullTitle": "specs/account_settings_tests.spec.ts > Primary User - Account Settings > log out user from settings page",
+      "file": "specs/account_settings_tests.spec.ts",
+      "status": "passed",
+      "duration": 9805,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "cancel change password",
+      "fullTitle": "specs/account_settings_tests.spec.ts > Primary User - Account Settings > cancel change password",
+      "file": "specs/account_settings_tests.spec.ts",
+      "status": "passed",
+      "duration": 4092,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "change password but the fields are empty",
+      "fullTitle": "specs/account_settings_tests.spec.ts > Primary User - Account Settings > change password but the fields are empty",
+      "file": "specs/account_settings_tests.spec.ts",
+      "status": "passed",
+      "duration": 4879,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "change password but no verification code",
+      "fullTitle": "specs/account_settings_tests.spec.ts > Primary User - Account Settings > change password but no verification code",
+      "file": "specs/account_settings_tests.spec.ts",
+      "status": "passed",
+      "duration": 4764,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "copy unique id",
+      "fullTitle": "specs/account_settings_tests.spec.ts > Primary User - Account Settings > copy unique id",
+      "file": "specs/account_settings_tests.spec.ts",
+      "status": "passed",
+      "duration": 3886,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should assign and revoke an enterprise seat",
+      "fullTitle": "specs/account_settings_tests.spec.ts > Primary User - Account Settings > should assign and revoke an enterprise seat",
+      "file": "specs/account_settings_tests.spec.ts",
+      "status": "passed",
+      "duration": 11306,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "Assigning new enterprise seat with an invalid email",
+      "fullTitle": "specs/account_settings_tests.spec.ts > Primary User - Account Settings > Assigning new enterprise seat with an invalid email",
+      "file": "specs/account_settings_tests.spec.ts",
+      "status": "passed",
+      "duration": 4072,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "toggle analytics data collection setting",
+      "fullTitle": "specs/account_settings_tests.spec.ts > Primary User - Account Settings > toggle analytics data collection setting",
+      "file": "specs/account_settings_tests.spec.ts",
+      "status": "passed",
+      "duration": 3859,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "change password but wrong verification code",
+      "fullTitle": "specs/account_settings_tests.spec.ts > Primary User - Account Settings > change password but wrong verification code",
+      "file": "specs/account_settings_tests.spec.ts",
+      "status": "passed",
+      "duration": 5229,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "change password successfully",
+      "fullTitle": "specs/account_settings_tests.spec.ts > Maildrop User - Password Change > change password successfully",
+      "file": "specs/account_settings_tests.spec.ts",
+      "status": "passed",
+      "duration": 17605,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "change password successfully back to original",
+      "fullTitle": "specs/account_settings_tests.spec.ts > Maildrop User - Password Change > change password successfully back to original",
+      "file": "specs/account_settings_tests.spec.ts",
+      "status": "passed",
+      "duration": 17929,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "click try now button to try animotive",
+      "fullTitle": "specs/animotive website test.spec.ts > Main menu web > click try now button to try animotive",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 3624,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "open studio page from main home page",
+      "fullTitle": "specs/animotive website test.spec.ts > Main menu web > open studio page from main home page",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 2812,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "open education page from main home page",
+      "fullTitle": "specs/animotive website test.spec.ts > Main menu web > open education page from main home page",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 3061,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "open museum page from main home page",
+      "fullTitle": "specs/animotive website test.spec.ts > Main menu web > open museum page from main home page",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 3257,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "open sign up page",
+      "fullTitle": "specs/animotive website test.spec.ts > Main menu web > open sign up page",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 4560,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "open animotive LinkedIn account",
+      "fullTitle": "specs/animotive website test.spec.ts > Social media links > open animotive LinkedIn account",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 5171,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "open animotive Youtube account",
+      "fullTitle": "specs/animotive website test.spec.ts > Social media links > open animotive Youtube account",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 3184,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "open animotive Instagram account",
+      "fullTitle": "specs/animotive website test.spec.ts > Social media links > open animotive Instagram account",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 2440,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "open animotive \"X\" account",
+      "fullTitle": "specs/animotive website test.spec.ts > Social media links > open animotive \"X\" account",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 5603,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "kids content page",
+      "fullTitle": "specs/animotive website test.spec.ts > Studio Content > kids content page",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 4550,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "tv and film content page",
+      "fullTitle": "specs/animotive website test.spec.ts > Studio Content > tv and film content page",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 4019,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "games content page",
+      "fullTitle": "specs/animotive website test.spec.ts > Studio Content > games content page",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 4444,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "Pro licensing",
+      "fullTitle": "specs/animotive website test.spec.ts > Licensing tab > Pro licensing",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 2133,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "Free option",
+      "fullTitle": "specs/animotive website test.spec.ts > Licensing tab > Free option",
+      "file": "specs/animotive website test.spec.ts",
+      "status": "passed",
+      "duration": 2202,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "gets the json for project list and adds a new project name",
+      "fullTitle": "specs/api_tests.spec.ts > gets the json for project list and adds a new project name",
+      "file": "specs/api_tests.spec.ts",
+      "status": "passed",
+      "duration": 3877,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "create a fantasy project",
+      "fullTitle": "specs/create_project.spec.ts > create project templates > create a fantasy project",
+      "file": "specs/create_project.spec.ts",
+      "status": "passed",
+      "duration": 11015,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "create a light world project",
+      "fullTitle": "specs/create_project.spec.ts > create project templates > create a light world project",
+      "file": "specs/create_project.spec.ts",
+      "status": "passed",
+      "duration": 8542,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "create a dark world project",
+      "fullTitle": "specs/create_project.spec.ts > create project templates > create a dark world project",
+      "file": "specs/create_project.spec.ts",
+      "status": "passed",
+      "duration": 10512,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "create a festive project",
+      "fullTitle": "specs/create_project.spec.ts > create project templates > create a festive project",
+      "file": "specs/create_project.spec.ts",
+      "status": "passed",
+      "duration": 8643,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "create a test template project",
+      "fullTitle": "specs/create_project.spec.ts > create project templates > create a test template project",
+      "file": "specs/create_project.spec.ts",
+      "status": "passed",
+      "duration": 6607,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "create a workshop world project",
+      "fullTitle": "specs/create_project.spec.ts > create project templates > create a workshop world project",
+      "file": "specs/create_project.spec.ts",
+      "status": "passed",
+      "duration": 13582,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "open most recently opened joined project",
+      "fullTitle": "specs/create_project.spec.ts > create project templates > open most recently opened joined project",
+      "file": "specs/create_project.spec.ts",
+      "status": "passed",
+      "duration": 4427,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "play getting started video",
+      "fullTitle": "specs/getting_started_tests.spec.ts > Main Dashboard tests > play getting started video",
+      "file": "specs/getting_started_tests.spec.ts",
+      "status": "passed",
+      "duration": 4062,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "search for named project and verify results",
+      "fullTitle": "specs/getting_started_tests.spec.ts > Main Dashboard tests > search for named project and verify results",
+      "file": "specs/getting_started_tests.spec.ts",
+      "status": "passed",
+      "duration": 3864,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should successfully login with valid credentials",
+      "fullTitle": "specs/login_to_animotive_dev.spec.ts > Login Page Tests > should successfully login with valid credentials",
+      "file": "specs/login_to_animotive_dev.spec.ts",
+      "status": "passed",
+      "duration": 2871,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should show error message with incorrect password",
+      "fullTitle": "specs/login_to_animotive_dev.spec.ts > Login Page Tests > should show error message with incorrect password",
+      "file": "specs/login_to_animotive_dev.spec.ts",
+      "status": "passed",
+      "duration": 2814,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should show error message with incorrect email",
+      "fullTitle": "specs/login_to_animotive_dev.spec.ts > Login Page Tests > should show error message with incorrect email",
+      "file": "specs/login_to_animotive_dev.spec.ts",
+      "status": "passed",
+      "duration": 2793,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should show error message with empty credentials",
+      "fullTitle": "specs/login_to_animotive_dev.spec.ts > Login Page Tests > should show error message with empty credentials",
+      "file": "specs/login_to_animotive_dev.spec.ts",
+      "status": "passed",
+      "duration": 1747,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should toggle password visibility",
+      "fullTitle": "specs/login_to_animotive_dev.spec.ts > Login Page Tests > should toggle password visibility",
+      "file": "specs/login_to_animotive_dev.spec.ts",
+      "status": "passed",
+      "duration": 1729,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should navigate to forgot password page",
+      "fullTitle": "specs/login_to_animotive_dev.spec.ts > Login Page Tests > should navigate to forgot password page",
+      "file": "specs/login_to_animotive_dev.spec.ts",
+      "status": "passed",
+      "duration": 1709,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should navigate back to sign in from forgot password",
+      "fullTitle": "specs/login_to_animotive_dev.spec.ts > Login Page Tests > should navigate back to sign in from forgot password",
+      "file": "specs/login_to_animotive_dev.spec.ts",
+      "status": "passed",
+      "duration": 1748,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should display password reset form after sending code",
+      "fullTitle": "specs/login_to_animotive_dev.spec.ts > Login Page Tests > should display password reset form after sending code",
+      "file": "specs/login_to_animotive_dev.spec.ts",
+      "status": "passed",
+      "duration": 2712,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should allow resend code action",
+      "fullTitle": "specs/login_to_animotive_dev.spec.ts > Login Page Tests > should allow resend code action",
+      "file": "specs/login_to_animotive_dev.spec.ts",
+      "status": "passed",
+      "duration": 62729,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should register a new account successfully",
+      "fullTitle": "specs/login_to_animotive_dev.spec.ts > Login Page Tests > should register a new account successfully",
+      "file": "specs/login_to_animotive_dev.spec.ts",
+      "status": "skipped",
+      "duration": 0,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should delete project from list",
+      "fullTitle": "specs/project_settings.spec.ts > Project Settings > Project Deletion > should delete project from list",
+      "file": "specs/project_settings.spec.ts",
+      "status": "passed",
+      "duration": 4178,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should cancel project deletion",
+      "fullTitle": "specs/project_settings.spec.ts > Project Settings > Project Deletion > should cancel project deletion",
+      "file": "specs/project_settings.spec.ts",
+      "status": "passed",
+      "duration": 4085,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should rename project successfully",
+      "fullTitle": "specs/project_settings.spec.ts > Project Settings > Project Renaming > should rename project successfully",
+      "file": "specs/project_settings.spec.ts",
+      "status": "passed",
+      "duration": 4826,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should cancel renaming a project",
+      "fullTitle": "specs/project_settings.spec.ts > Project Settings > Project Renaming > should cancel renaming a project",
+      "file": "specs/project_settings.spec.ts",
+      "status": "passed",
+      "duration": 4148,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should change audio quality via project settings to MP3",
+      "fullTitle": "specs/project_settings.spec.ts > Project Settings > Other Project Settings > should change audio quality via project settings to MP3",
+      "file": "specs/project_settings.spec.ts",
+      "status": "passed",
+      "duration": 4114,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should change audio quality via project settings to WAV",
+      "fullTitle": "specs/project_settings.spec.ts > Project Settings > Other Project Settings > should change audio quality via project settings to WAV",
+      "file": "specs/project_settings.spec.ts",
+      "status": "passed",
+      "duration": 4064,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should display create account form with all required fields",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should display create account form with all required fields",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 1704,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should show error when submitting empty form",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should show error when submitting empty form",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 1764,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should show error for invalid email format - missing @",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should show error for invalid email format - missing @",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 2041,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should show error for invalid email format - missing domain",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should show error for invalid email format - missing domain",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 2064,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should show error for invalid email format - missing username",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should show error for invalid email format - missing username",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 2023,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should allow valid email formats",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should allow valid email formats",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 5659,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should require display name field",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should require display name field",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 2033,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should require email field",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should require email field",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 2072,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should require password field",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should require password field",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 2063,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should require confirm password field",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should require confirm password field",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 2058,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should allow both mailing list options",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should allow both mailing list options",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 1791,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should switch between Sign In and Create Account tabs",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should switch between Sign In and Create Account tabs",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 1760,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should display Terms and Privacy checkboxes",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should display Terms and Privacy checkboxes",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 1695,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should allow checking Terms and Privacy checkboxes",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should allow checking Terms and Privacy checkboxes",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 1829,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should display Read Terms and Privacy buttons",
+      "fullTitle": "specs/register_validation.spec.ts > Create Account Validation Tests > should display Read Terms and Privacy buttons",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 1954,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should show error for invalid email format in sign in - missing @",
+      "fullTitle": "specs/register_validation.spec.ts > Sign In Email Validation Tests > should show error for invalid email format in sign in - missing @",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 1763,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should show error for invalid email format in sign in - missing domain",
+      "fullTitle": "specs/register_validation.spec.ts > Sign In Email Validation Tests > should show error for invalid email format in sign in - missing domain",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 1774,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should show error for invalid email format in sign in - missing username",
+      "fullTitle": "specs/register_validation.spec.ts > Sign In Email Validation Tests > should show error for invalid email format in sign in - missing username",
+      "file": "specs/register_validation.spec.ts",
+      "status": "passed",
+      "duration": 1833,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "change audio to WAV",
+      "fullTitle": "specs/scene_tests.spec.ts > change audio to WAV",
+      "file": "specs/scene_tests.spec.ts",
+      "status": "passed",
+      "duration": 5751,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "change audio to MP3",
+      "fullTitle": "specs/scene_tests.spec.ts > change audio to MP3",
+      "file": "specs/scene_tests.spec.ts",
+      "status": "passed",
+      "duration": 5143,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "create a new scene",
+      "fullTitle": "specs/scene_tests.spec.ts > create a new scene",
+      "file": "specs/scene_tests.spec.ts",
+      "status": "passed",
+      "duration": 5425,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "duplicate a scene",
+      "fullTitle": "specs/scene_tests.spec.ts > duplicate a scene",
+      "file": "specs/scene_tests.spec.ts",
+      "status": "passed",
+      "duration": 5593,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "delete a scene",
+      "fullTitle": "specs/scene_tests.spec.ts > delete a scene",
+      "file": "specs/scene_tests.spec.ts",
+      "status": "passed",
+      "duration": 5627,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "cancel scene deletion",
+      "fullTitle": "specs/scene_tests.spec.ts > cancel scene deletion",
+      "file": "specs/scene_tests.spec.ts",
+      "status": "passed",
+      "duration": 4748,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "toggle to list view and back to grid view",
+      "fullTitle": "specs/scene_tests.spec.ts > toggle to list view and back to grid view",
+      "file": "specs/scene_tests.spec.ts",
+      "status": "passed",
+      "duration": 4797,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "toggle to ascending order and back to descending order with the name filter",
+      "fullTitle": "specs/scene_tests.spec.ts > toggle to ascending order and back to descending order with the name filter",
+      "file": "specs/scene_tests.spec.ts",
+      "status": "passed",
+      "duration": 6705,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should cancel inviting a user to project",
+      "fullTitle": "specs/team_and_invitation tests.spec.ts > Primary User - Invitation Management > should cancel inviting a user to project",
+      "file": "specs/team_and_invitation tests.spec.ts",
+      "status": "passed",
+      "duration": 5039,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should verify no pending invites for primary user",
+      "fullTitle": "specs/team_and_invitation tests.spec.ts > Primary User - Invitation Management > should verify no pending invites for primary user",
+      "file": "specs/team_and_invitation tests.spec.ts",
+      "status": "passed",
+      "duration": 2976,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should remove a team member from the project",
+      "fullTitle": "specs/team_and_invitation tests.spec.ts > Primary User - Invitation Management > should remove a team member from the project",
+      "file": "specs/team_and_invitation tests.spec.ts",
+      "status": "passed",
+      "duration": 6461,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should successfully invite user to project",
+      "fullTitle": "specs/team_and_invitation tests.spec.ts > Primary User - Invitation Management > should successfully invite user to project",
+      "file": "specs/team_and_invitation tests.spec.ts",
+      "status": "passed",
+      "duration": 5648,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should successfully decline project invitation",
+      "fullTitle": "specs/team_and_invitation tests.spec.ts > Secondary User - Invitation Response > should successfully decline project invitation",
+      "file": "specs/team_and_invitation tests.spec.ts",
+      "status": "passed",
+      "duration": 4747,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should successfully accept project invitation",
+      "fullTitle": "specs/team_and_invitation tests.spec.ts > Secondary User - Invitation Response > should successfully accept project invitation",
+      "file": "specs/team_and_invitation tests.spec.ts",
+      "status": "skipped",
+      "duration": 2967,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "should verify that project owner is a member of the team",
+      "fullTitle": "specs/team_and_invitation tests.spec.ts > Team tests > should verify that project owner is a member of the team",
+      "file": "specs/team_and_invitation tests.spec.ts",
+      "status": "passed",
+      "duration": 4454,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    },
+    {
+      "title": "delete project",
+      "fullTitle": "test_help/help.spec.ts > delete project",
+      "file": "test_help/help.spec.ts",
+      "status": "skipped",
+      "duration": 0,
+      "retries": 0,
+      "flaky": false,
+      "errorMessage": null
+    }
+  ]
+}
