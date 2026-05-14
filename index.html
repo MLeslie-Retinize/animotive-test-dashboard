@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Animotive Test Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="assets/animotive_icon.png" />
+  <link rel="shortcut icon" href="assets/animotive_icon_small.png" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,6 +43,13 @@
       display: flex;
       align-items: center;
       gap: 12px;
+    }
+    .header-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: block;
+      flex: 0 0 auto;
     }
     header h1 { font-size: 18px; font-weight: 600; color: var(--text); }
     header .subtitle { color: var(--muted); font-size: 13px; margin-left: auto; }
@@ -170,16 +179,97 @@
       background: var(--surface2); border: 1px solid var(--border); color: var(--text);
       padding: 4px 8px; border-radius: 5px; font-size: 12px; cursor: pointer;
     }
+
+    @media (max-width: 980px) {
+      header {
+        padding: 14px 18px;
+        flex-wrap: wrap;
+        row-gap: 6px;
+      }
+
+      header h1 {
+        font-size: 17px;
+      }
+
+      header .subtitle {
+        width: 100%;
+        margin-left: 0;
+        font-size: 12px;
+      }
+
+      main {
+        padding: 20px 18px 28px;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .chart-box,
+      .chart-box.wide {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .section {
+        margin-bottom: 24px;
+      }
+
+      .section-title {
+        margin-bottom: 10px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .card {
+        padding: 14px 14px;
+      }
+
+      .card .value {
+        font-size: 22px;
+      }
+
+      .chart-box {
+        padding: 14px;
+      }
+
+      .chart-box h3 {
+        margin-bottom: 10px;
+      }
+
+      .range-row {
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      thead th,
+      tbody td {
+        padding: 9px 10px;
+      }
+
+      tbody td.mono {
+        font-size: 11px;
+      }
+
+      .pagination {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="24" height="24" rx="6" fill="#6366f1"/>
-    <path d="M7 17V9l5-3 5 3v8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M10 17v-4h4v4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
+  <img class="header-logo" src="assets/animotive_icon.png" alt="Animotive logo" />
   <h1>Animotive Test Dashboard</h1>
   <span class="subtitle" id="lastUpdated">Loading…</span>
 </header>
