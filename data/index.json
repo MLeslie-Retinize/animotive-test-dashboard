@@ -1,5 +1,21 @@
 [
   {
+    "id": "2026-06-08-27125667034",
+    "date": "2026-06-08",
+    "timestamp": "2026-06-08T08:59:23.278Z",
+    "branch": "main",
+    "commit": "f7b3116b92eb8212c303136ce0f18d8307f3ea10",
+    "workflowUrl": "https://github.com/MLeslie-Retinize/animotive_playwright_tests/actions/runs/27125667034",
+    "status": "failed",
+    "stats": {
+      "total": 84,
+      "passed": 75,
+      "failed": 5,
+      "flaky": 1,
+      "skipped": 3
+    }
+  },
+  {
     "id": "2026-06-05-27004031437",
     "date": "2026-06-05",
     "timestamp": "2026-06-05T08:32:23.362Z",
