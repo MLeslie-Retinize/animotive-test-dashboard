@@ -6,40 +6,51 @@
   <title>Animotive Test Dashboard</title>
   <link rel="icon" type="image/svg+xml" href="assets/animotive_icon.png" />
   <link rel="shortcut icon" href="assets/animotive_icon_small.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0f1117;
-      --surface:   #1a1d27;
-      --surface2:  #22263a;
-      --border:    #2e3250;
-      --text:      #e2e8f0;
-      --muted:     #8892b0;
-      --pass:      #22c55e;
-      --fail:      #ef4444;
-      --flaky:     #f59e0b;
-      --skip:      #64748b;
-      --accent:    #6366f1;
-      --accent2:   #818cf8;
-      --radius:    8px;
+      --bg:         #12141a;
+      --surface:    #181b23;
+      --surface2:   #1e222c;
+      --border:     #2a2f3b;
+      --border-soft:#22262f;
+      --text:       #eceef2;
+      --muted:      #9198a8;
+      --faint:      #5c6376;
+      --pass:       #3fbf82;
+      --pass-soft:  rgba(63,191,130,.12);
+      --fail:       #ea5a6e;
+      --fail-soft:  rgba(234,90,110,.12);
+      --flaky:      #e0a83f;
+      --flaky-soft: rgba(224,168,63,.12);
+      --skip:       #6b7280;
+      --skip-soft:  rgba(107,114,128,.12);
+      --accent:     #8177f2;
+      --accent-soft:rgba(129,119,242,.14);
+      --radius:     3px;
     }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       font-size: 14px;
-      line-height: 1.6;
+      line-height: 1.55;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
+    .mono { font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
 
-    /* ---- Layout ---- */
+    /* ---- Header ---- */
     header {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 18px 32px;
+      padding: 20px 32px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -50,86 +61,128 @@
       justify-content: center;
       min-width: 44px;
       min-height: 44px;
-      border-radius: 10px;
+      border-radius: 8px;
     }
     .header-home-link:focus-visible {
-      outline: 2px solid var(--accent2);
+      outline: 2px solid var(--accent);
       outline-offset: 2px;
     }
     .header-logo {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       border-radius: 6px;
       display: block;
       flex: 0 0 auto;
     }
-    header h1 { font-size: 18px; font-weight: 600; color: var(--text); }
+    .brand-text { display: flex; flex-direction: column; }
+    header h1 { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.2; }
+    header .brand-sub { font-size: 12.5px; color: var(--faint); margin-top: 1px; }
     header .subtitle { color: var(--muted); font-size: 13px; margin-left: auto; }
 
-    main { padding: 28px 32px; max-width: 1400px; margin: 0 auto; }
+    main { padding: 40px 32px 96px; max-width: 1180px; margin: 0 auto; }
 
-    .section { margin-bottom: 36px; }
+    .section { margin-bottom: 52px; }
     .section-title {
-      font-size: 13px;
+      font-size: 19px;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      color: var(--muted);
-      margin-bottom: 14px;
+      letter-spacing: -.005em;
+      color: var(--text);
+      margin-bottom: 4px;
     }
+    .section-sub { color: var(--faint); font-size: 13.5px; margin-bottom: 22px; }
 
-    /* ---- Cards ---- */
-    .cards {
+    /* ---- Hero (Latest Run Summary) ---- */
+    .hero {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-      gap: 14px;
+      grid-template-columns: auto 1fr;
+      gap: 48px;
+      align-items: center;
+      padding: 8px 0 44px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
     }
-    .card {
+    @media (max-width: 700px) { .hero { grid-template-columns: 1fr; gap: 24px; } }
+
+    .hero-figure { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+    .hero-figure .label { color: var(--muted); font-size: 13px; }
+    .hero-figure .rate {
+      font-weight: 600;
+      font-size: 72px;
+      line-height: 1;
+      letter-spacing: -.02em;
+      color: var(--pass);
+    }
+    .hero-figure .rate.warn { color: var(--flaky); }
+    .hero-figure .rate.bad  { color: var(--fail); }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 10px;
+      padding: 5px 11px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      background: var(--pass-soft);
+      color: var(--pass);
+    }
+    .status-pill.fail { background: var(--fail-soft); color: var(--fail); }
+    .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    .hero-details { display: flex; flex-direction: column; gap: 18px; }
+    .hero-run-line { font-size: 14.5px; color: var(--muted); }
+    .hero-run-line .sep { margin: 0 8px; color: var(--faint); }
+    .hero-run-line strong { color: var(--text); font-weight: 500; }
+
+    .stat-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .stat-chip {
+      display: flex; align-items: center; gap: 9px;
+      padding: 10px 16px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 18px 20px;
+      min-width: 100px;
     }
-    .card .label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
-    .card .value { font-size: 26px; font-weight: 700; }
-    .card.pass .value  { color: var(--pass); }
-    .card.fail .value  { color: var(--fail); }
-    .card.flaky .value { color: var(--flaky); }
-    .card.skip .value  { color: var(--skip); }
-    .card.neutral .value { color: var(--text); }
-    .card.accent .value { color: var(--accent2); }
-
-    /* ---- Status badge ---- */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 2px 9px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .badge.pass  { background: rgba(34,197,94,.15);  color: var(--pass); }
-    .badge.fail  { background: rgba(239,68,68,.15);  color: var(--fail); }
-    .badge.flaky { background: rgba(245,158,11,.15); color: var(--flaky); }
-    .badge.skip  { background: rgba(100,116,139,.15);color: var(--skip); }
+    .stat-chip .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+    .stat-chip .col { display: flex; flex-direction: column; }
+    .stat-chip .n { font-size: 18px; font-weight: 600; }
+    .stat-chip .l { color: var(--faint); font-size: 11.5px; margin-top: 1px; }
 
     /* ---- Charts grid ---- */
-    .charts-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .chart-box {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 20px 22px;
     }
-    .chart-box h3 { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 14px; text-transform: uppercase; letter-spacing: .06em; }
+    .chart-box h3 {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
     .chart-box.wide { grid-column: 1 / -1; }
     .chart-container { position: relative; }
     .chart-container canvas { max-width: 100%; }
+
+    @media (max-width: 860px) {
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+
+    /* range toggle (replaces native select) */
+    .range-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+    .range-row .hint { color: var(--faint); font-size: 12px; }
+    .range-toggle { display: flex; gap: 2px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 3px; }
+    .range-toggle button {
+      appearance: none; border: none; background: transparent; color: var(--muted);
+      font-family: 'Space Grotesk', sans-serif; font-size: 12px; padding: 6px 13px;
+      border-radius: 16px; cursor: pointer; min-height: 30px;
+      transition: background .15s ease, color .15s ease;
+    }
+    .range-toggle button.active { background: var(--accent); color: #fff; }
+    .range-toggle button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
     /* ---- Table ---- */
     .table-wrap {
@@ -142,248 +195,120 @@
     table { width: 100%; border-collapse: collapse; min-width: 860px; }
     thead th {
       background: var(--surface2);
-      padding: 10px 14px;
+      padding: 0 14px 10px;
+      padding-top: 12px;
       text-align: left;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .06em;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--faint);
       white-space: nowrap;
+      border-bottom: 1px solid var(--border);
     }
-    tbody tr { border-top: 1px solid var(--border); }
+    tbody tr { border-top: 1px solid var(--border-soft); }
+    tbody tr:first-child { border-top: none; }
     tbody tr:hover { background: var(--surface2); }
-    tbody td { padding: 10px 14px; font-size: 13px; color: var(--text); }
-    tbody td.mono { font-family: monospace; font-size: 12px; color: var(--muted); }
-    tbody td a {
-      color: var(--accent2);
-      text-decoration: none;
-      border-radius: 6px;
-    }
+    tbody td { padding: 12px 14px; font-size: 13px; color: var(--text); }
+    tbody td.mono { font-size: 12px; color: var(--muted); }
+    tbody td a { color: var(--accent); text-decoration: none; border-radius: 6px; }
     tbody td a:hover { text-decoration: underline; }
-    tbody td a:focus-visible {
-      outline: 2px solid var(--accent2);
-      outline-offset: 2px;
-    }
+    tbody td a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-    /* counts */
-    .count { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 12px; font-weight: 600; }
-    .count.pass  { background: rgba(34,197,94,.12);  color: var(--pass); }
-    .count.fail  { background: rgba(239,68,68,.12);  color: var(--fail); }
-    .count.flaky { background: rgba(245,158,11,.12); color: var(--flaky); }
-    .count.skip  { background: rgba(100,116,139,.12);color: var(--skip); }
+    .count { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; }
+    .count.pass  { background: var(--pass-soft);  color: var(--pass); }
+    .count.fail  { background: var(--fail-soft);  color: var(--fail); }
+    .count.flaky { background: var(--flaky-soft); color: var(--flaky); }
+    .count.skip  { background: var(--skip-soft);  color: var(--skip); }
 
-    /* pagination */
+    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+    .badge.passed  { background: var(--pass-soft);  color: var(--pass); }
+    .badge.failed  { background: var(--fail-soft);  color: var(--fail); }
+    .badge.flaky   { background: var(--flaky-soft); color: var(--flaky); }
+    .badge.skipped { background: var(--skip-soft);  color: var(--skip); }
+    .badge.pass    { background: var(--pass-soft);  color: var(--pass); }
+    .badge.fail    { background: var(--fail-soft);  color: var(--fail); }
+
     .pagination { display: flex; gap: 8px; align-items: center; margin-top: 14px; justify-content: flex-end; }
     .pagination button {
       background: var(--surface2); border: 1px solid var(--border); color: var(--text);
-      padding: 5px 12px; border-radius: 5px; cursor: pointer; font-size: 13px;
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 6px 14px; border-radius: 16px; cursor: pointer; font-size: 13px;
     }
-    .pagination button:hover { background: var(--border); }
+    .pagination button:hover:not(:disabled) { background: var(--border); }
     .pagination button:disabled { opacity: .4; cursor: default; }
-    .pagination span { color: var(--muted); font-size: 13px; }
+    .pagination button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .pagination span { color: var(--faint); font-size: 13px; }
 
-    /* diff table */
-    .diff-section { margin-bottom: 22px; }
-    .diff-section h4 { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .06em; }
+    /* ---- Diff section ---- */
+    .diff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 900px) { .diff-grid { grid-template-columns: 1fr; } }
+    .diff-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+    }
+    .diff-panel .diff-head {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13.5px; font-weight: 600; margin-bottom: 4px;
+    }
+    .diff-panel .diff-head .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+    .diff-panel .diff-count { color: var(--faint); font-size: 12px; margin-bottom: 12px; }
+    .diff-item {
+      padding: 9px 0; border-top: 1px solid var(--border-soft);
+      font-size: 13px; line-height: 1.4; word-break: break-word;
+    }
+    .diff-item:first-of-type { border-top: none; }
+    .diff-empty { color: var(--faint); font-size: 13px; padding: 4px 0; }
 
-    /* loading / empty */
+    /* ---- Loading / empty ---- */
     .loading, .empty {
       display: flex; align-items: center; justify-content: center;
-      min-height: 120px; color: var(--muted); font-size: 13px;
+      min-height: 100px; color: var(--faint); font-size: 13px;
     }
 
-    /* range select */
-    .range-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .range-row label { font-size: 12px; color: var(--muted); }
-    .range-row select {
-      background: var(--surface2); border: 1px solid var(--border); color: var(--text);
-      padding: 4px 8px; border-radius: 5px; font-size: 12px; cursor: pointer;
-    }
-    .range-row select:focus-visible {
-      outline: 2px solid var(--accent2);
-      outline-offset: 2px;
+    footer {
+      color: var(--faint); font-size: 12px; padding-top: 28px; margin-top: 8px;
+      border-top: 1px solid var(--border);
+      max-width: 1180px; margin-left: auto; margin-right: auto; padding-left: 32px; padding-right: 32px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
     }
 
     @media (max-width: 980px) {
-      header {
-        padding: 14px 18px;
-        flex-wrap: wrap;
-        row-gap: 6px;
-      }
-
-      header h1 {
-        font-size: 17px;
-      }
-
-      header .subtitle {
-        width: 100%;
-        margin-left: 0;
-        font-size: 12px;
-      }
-
-      main {
-        padding: 20px 18px 28px;
-      }
-
-      .cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .charts-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .chart-box,
-      .chart-box.wide {
-        grid-column: auto;
-      }
+      header { padding: 14px 18px; flex-wrap: wrap; row-gap: 6px; }
+      header h1 { font-size: 15px; }
+      header .subtitle { width: 100%; margin-left: 0; font-size: 12px; }
+      main { padding: 28px 18px 64px; }
+      .charts-grid { grid-template-columns: 1fr; }
+      .chart-box, .chart-box.wide { grid-column: auto; }
     }
 
     @media (max-width: 640px) {
-      body {
-        font-size: 16px;
-        line-height: 1.55;
-      }
-
-      header h1 {
-        font-size: 19px;
-      }
-
-      .section {
-        margin-bottom: 24px;
-      }
-
-      .section-title {
-        font-size: 12px;
-        margin-bottom: 10px;
-      }
-
-      .cards {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      .card {
-        padding: 14px 14px;
-      }
-
-      .card .label {
-        font-size: 13px;
-      }
-
-      .card .value {
-        font-size: 24px;
-      }
-
-      .chart-box {
-        padding: 14px;
-      }
-
-      .chart-box h3 {
-        font-size: 14px;
-        margin-bottom: 10px;
-      }
-
-      .range-row {
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .range-row label {
-        font-size: 13px;
-      }
-
-      .range-row select {
-        min-height: 44px;
-        font-size: 14px;
-        padding: 8px 12px;
-      }
-
-      .table-wrap {
-        border-radius: 10px;
-      }
-
-      table {
-        min-width: 640px;
-      }
-
-      thead th,
-      tbody td {
-        padding: 10px 12px;
-      }
-
-      thead th:nth-child(2),
-      thead th:nth-child(3),
-      tbody td:nth-child(2),
-      tbody td:nth-child(3) {
-        display: none;
-      }
-
-      thead th:first-child,
-      tbody td:first-child {
-        position: sticky;
-        left: 0;
-        z-index: 2;
-      }
-
-      thead th:first-child {
-        z-index: 4;
-      }
-
-      tbody td:first-child {
-        background: var(--surface);
-      }
-
-      tbody tr:hover td:first-child {
-        background: var(--surface2);
-      }
-
-      thead th:nth-child(4),
-      tbody td:nth-child(4) {
-        position: sticky;
-        left: 122px;
-        z-index: 2;
-      }
-
-      thead th:nth-child(4) {
-        z-index: 4;
-      }
-
-      tbody td:nth-child(4) {
-        background: var(--surface);
-      }
-
-      tbody tr:hover td:nth-child(4) {
-        background: var(--surface2);
-      }
-
-      tbody td.mono {
-        font-size: 12px;
-      }
-
-      tbody td a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 44px;
-        padding: 0 10px;
-      }
-
-      .pagination {
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .pagination button {
-        min-height: 44px;
-        padding: 0 14px;
-      }
-
-      .pagination span {
-        font-size: 14px;
-      }
+      body { font-size: 16px; line-height: 1.55; }
+      .hero-figure .rate { font-size: 52px; }
+      .section { margin-bottom: 34px; }
+      .section-title { font-size: 17px; }
+      .chart-box { padding: 16px; }
+      .chart-box h3 { font-size: 14px; }
+      .range-toggle button { min-height: 40px; font-size: 13px; }
+      .table-wrap { border-radius: 8px; }
+      table { min-width: 640px; }
+      thead th, tbody td { padding: 10px 12px; }
+      thead th:nth-child(2), thead th:nth-child(3),
+      tbody td:nth-child(2), tbody td:nth-child(3) { display: none; }
+      thead th:first-child, tbody td:first-child { position: sticky; left: 0; z-index: 2; }
+      thead th:first-child { z-index: 4; }
+      tbody td:first-child { background: var(--surface); }
+      tbody tr:hover td:first-child { background: var(--surface2); }
+      thead th:nth-child(4), tbody td:nth-child(4) { position: sticky; left: 122px; z-index: 2; }
+      thead th:nth-child(4) { z-index: 4; }
+      tbody td:nth-child(4) { background: var(--surface); }
+      tbody tr:hover td:nth-child(4) { background: var(--surface2); }
+      tbody td.mono { font-size: 12px; }
+      tbody td a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 10px; }
+      .pagination { justify-content: center; flex-wrap: wrap; gap: 10px; }
+      .pagination button { min-height: 44px; padding: 0 14px; }
+      .pagination span { font-size: 14px; }
+      .diff-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -393,36 +318,44 @@
   <a class="header-home-link" href="https://animotive.com" aria-label="Animotive home page">
     <img class="header-logo" src="assets/animotive_icon.png" alt="Animotive logo" />
   </a>
-  <h1>Animotive Test Dashboard</h1>
+  <div class="brand-text">
+    <h1>Animotive</h1>
+    <span class="brand-sub">Test Dashboard</span>
+  </div>
   <span class="subtitle" id="lastUpdated">Loading…</span>
 </header>
 
 <main>
 
-  <!-- Summary cards -->
-  <div class="section">
-    <div class="section-title">Latest Run Summary</div>
-    <div class="cards" id="summaryCards">
-      <div class="loading">Loading…</div>
+  <!-- Latest Run Summary -->
+  <section class="hero">
+    <div class="hero-figure">
+      <div class="label">Latest run — pass rate</div>
+      <div class="rate mono" id="heroRate">—</div>
+      <div class="status-pill" id="heroStatus">Loading…</div>
     </div>
-  </div>
+    <div class="hero-details">
+      <div class="hero-run-line mono" id="heroMeta">Loading…</div>
+      <div class="stat-row" id="heroStats"></div>
+    </div>
+  </section>
 
   <!-- Charts -->
   <div class="section">
-    <div class="section-title">Trends &amp; Insights</div>
+    <div class="section-title">Trends &amp; insights</div>
+    <div class="section-sub">Pass rate history, recurring offenders, and coverage by spec file.</div>
     <div class="charts-grid">
 
       <!-- Pass-rate trend -->
       <div class="chart-box wide">
-        <h3>Pass Rate Trend</h3>
         <div class="range-row">
-          <label for="trendRange">Show last</label>
-          <select id="trendRange">
-            <option value="14">14 runs</option>
-            <option value="30" selected>30 runs</option>
-            <option value="60">60 runs</option>
-            <option value="0">All</option>
-          </select>
+          <h3 style="margin-bottom:0">Pass rate trend</h3>
+          <div class="range-toggle" id="rangeToggle">
+            <button data-range="14">14 runs</button>
+            <button data-range="30" class="active">30 runs</button>
+            <button data-range="60">60 runs</button>
+            <button data-range="0">All</button>
+          </div>
         </div>
         <div class="chart-container" style="height:220px">
           <canvas id="trendChart"></canvas>
@@ -431,7 +364,7 @@
 
       <!-- Top failing tests -->
       <div class="chart-box">
-        <h3>Top Failing Tests</h3>
+        <h3>Top failing tests</h3>
         <div class="chart-container" style="height:300px">
           <canvas id="failChart"></canvas>
         </div>
@@ -439,7 +372,7 @@
 
       <!-- Flaky tests -->
       <div class="chart-box">
-        <h3>Flaky Tests</h3>
+        <h3>Flaky tests</h3>
         <div class="chart-container" style="height:300px">
           <canvas id="flakyChart"></canvas>
         </div>
@@ -447,7 +380,7 @@
 
       <!-- Per-spec pass rate -->
       <div class="chart-box wide">
-        <h3>Pass Rate by Spec File</h3>
+        <h3>Pass rate by spec file</h3>
         <div class="chart-container" style="height:260px">
           <canvas id="specChart"></canvas>
         </div>
@@ -458,7 +391,8 @@
 
   <!-- Failure diff -->
   <div class="section">
-    <div class="section-title">Failure Diff — Latest vs Previous Run</div>
+    <div class="section-title">Failure diff — latest vs previous run</div>
+    <div class="section-sub">What changed between the two most recent runs.</div>
     <div id="diffSection">
       <div class="loading">Loading…</div>
     </div>
@@ -466,7 +400,8 @@
 
   <!-- Run history table -->
   <div class="section">
-    <div class="section-title">Run History</div>
+    <div class="section-title">Run history</div>
+    <div class="section-sub">Every recorded CI run, most recent first.</div>
     <div class="table-wrap">
       <table>
         <thead>
@@ -493,6 +428,11 @@
 
 </main>
 
+<footer>
+  <span>Animotive Test Dashboard</span>
+  <span id="footerRunCount"></span>
+</footer>
+
 <script>
 // ---------------------------------------------------------------------------
 // State
@@ -502,6 +442,7 @@ let runCache = {};   // { id: fullRunObject } — loaded lazily from data/runs/*
 
 const PAGE_SIZE = 20;
 let currentPage = 0;
+let trendRange = 30; // active range for the pass-rate trend chart (0 = all)
 
 let trendChartInst  = null;
 let failChartInst   = null;
@@ -537,10 +478,20 @@ let specChartInst   = null;
 
   document.getElementById('lastUpdated').textContent =
     allRuns.length > 0
-      ? `Last updated ${fmtDate(allRuns[0].timestamp)}`
+      ? `Updated ${fmtDate(allRuns[0].timestamp)}`
       : 'No runs yet';
 
-  document.getElementById('trendRange').addEventListener('change', renderTrendChart);
+  document.getElementById('footerRunCount').textContent =
+    allRuns.length > 0 ? `${allRuns.length} runs recorded` : '';
+
+  document.getElementById('rangeToggle').addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    document.querySelectorAll('#rangeToggle button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    trendRange = parseInt(btn.dataset.range, 10);
+    renderTrendChart();
+  });
 })();
 
 // ---------------------------------------------------------------------------
@@ -563,52 +514,44 @@ async function loadRunFiles(ids) {
 }
 
 // ---------------------------------------------------------------------------
-// Summary Cards
+// Latest Run Summary (hero)
 // ---------------------------------------------------------------------------
 function renderSummaryCards() {
-  const container = document.getElementById('summaryCards');
+  const rateEl   = document.getElementById('heroRate');
+  const statusEl = document.getElementById('heroStatus');
+  const metaEl   = document.getElementById('heroMeta');
+  const statsEl  = document.getElementById('heroStats');
+
   if (allRuns.length === 0) {
-    container.innerHTML = '<div class="empty">No runs recorded yet.</div>';
+    rateEl.textContent = '—';
+    statusEl.textContent = 'No runs yet';
+    statusEl.className = 'status-pill';
+    metaEl.textContent = 'No runs recorded yet.';
+    statsEl.innerHTML = '';
     return;
   }
 
   const latest = allRuns[0];
   const s = latest.stats;
-  const passRate = s.total > 0 ? ((s.passed + s.flaky) / s.total * 100).toFixed(1) : '—';
+  const passRate = s.total > 0 ? ((s.passed + s.flaky) / s.total * 100) : null;
 
-  container.innerHTML = `
-    <div class="card neutral">
-      <div class="label">Total Runs</div>
-      <div class="value">${allRuns.length}</div>
-    </div>
-    <div class="card ${latest.status === 'passed' ? 'pass' : 'fail'}">
-      <div class="label">Latest Status</div>
-      <div class="value">${latest.status === 'passed' ? '✓ Pass' : '✗ Fail'}</div>
-    </div>
-    <div class="card accent">
-      <div class="label">Latest Pass Rate</div>
-      <div class="value">${passRate}%</div>
-    </div>
-    <div class="card pass">
-      <div class="label">Passed</div>
-      <div class="value">${s.passed}</div>
-    </div>
-    <div class="card fail">
-      <div class="label">Failed</div>
-      <div class="value">${s.failed}</div>
-    </div>
-    <div class="card flaky">
-      <div class="label">Flaky</div>
-      <div class="value">${s.flaky}</div>
-    </div>
-    <div class="card skip">
-      <div class="label">Skipped</div>
-      <div class="value">${s.skipped}</div>
-    </div>
-    <div class="card neutral">
-      <div class="label">Total Tests</div>
-      <div class="value">${s.total}</div>
-    </div>
+  rateEl.textContent = passRate !== null ? passRate.toFixed(1) + '%' : '—';
+  rateEl.className = 'rate mono' + (passRate !== null && passRate < 90 ? ' warn' : '') + (passRate !== null && passRate < 75 ? ' bad' : '');
+
+  const isPass = latest.status === 'passed';
+  statusEl.className = 'status-pill' + (isPass ? '' : ' fail');
+  statusEl.innerHTML = `<span class="dot"></span>${isPass ? 'Passed' : 'Failed'}`;
+
+  metaEl.innerHTML = `Run <strong>#${allRuns.length - allRuns.indexOf(latest)}</strong>
+    <span class="sep">·</span><strong>${esc(latest.commit.slice(0,7))}</strong> on <strong>${esc(latest.branch)}</strong>
+    <span class="sep">·</span>${fmtDate(latest.timestamp)}`;
+
+  statsEl.innerHTML = `
+    <div class="stat-chip"><span class="dot" style="background:var(--pass)"></span><div class="col"><span class="n mono">${s.passed}</span><span class="l">Passed</span></div></div>
+    <div class="stat-chip"><span class="dot" style="background:var(--fail)"></span><div class="col"><span class="n mono">${s.failed}</span><span class="l">Failed</span></div></div>
+    <div class="stat-chip"><span class="dot" style="background:var(--flaky)"></span><div class="col"><span class="n mono">${s.flaky}</span><span class="l">Flaky</span></div></div>
+    <div class="stat-chip"><span class="dot" style="background:var(--skip)"></span><div class="col"><span class="n mono">${s.skipped}</span><span class="l">Skipped</span></div></div>
+    <div class="stat-chip"><span class="dot" style="background:var(--accent)"></span><div class="col"><span class="n mono">${s.total}</span><span class="l">Total tests</span></div></div>
   `;
 }
 
@@ -632,7 +575,7 @@ function renderHistory() {
       : '—';
     return `
       <tr>
-        <td>${fmtDate(r.timestamp)}</td>
+        <td class="mono">${fmtDate(r.timestamp)}</td>
         <td>${esc(r.branch)}</td>
         <td class="mono">${esc(r.commit.slice(0,7))}</td>
         <td><span class="badge ${r.status}">${r.status}</span></td>
@@ -640,7 +583,7 @@ function renderHistory() {
         <td><span class="count fail">${s.failed}</span></td>
         <td><span class="count flaky">${s.flaky}</span></td>
         <td><span class="count skip">${s.skipped}</span></td>
-        <td>${s.total}</td>
+        <td class="mono">${s.total}</td>
         <td>${link}</td>
       </tr>`;
   }).join('');
@@ -664,8 +607,7 @@ function renderPagination() {
 // Pass-rate Trend Chart
 // ---------------------------------------------------------------------------
 function renderTrendChart() {
-  const rangeVal = parseInt(document.getElementById('trendRange').value, 10);
-  const runs = rangeVal > 0 ? allRuns.slice(0, rangeVal) : allRuns;
+  const runs = trendRange > 0 ? allRuns.slice(0, trendRange) : allRuns;
   const sorted = [...runs].reverse(); // chronological for chart x-axis
 
   const labels = sorted.map(r => r.date);
@@ -682,12 +624,13 @@ function renderTrendChart() {
       datasets: [{
         label: 'Pass Rate %',
         data,
-        borderColor: '#6366f1',
-        backgroundColor: 'rgba(99,102,241,.12)',
+        borderColor: '#8177f2',
+        backgroundColor: 'rgba(129,119,242,.12)',
         tension: 0.3,
         fill: true,
-        pointRadius: 3,
-        pointHoverRadius: 5,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        borderWidth: 2,
       }]
     },
     options: chartOptions({ yMax: 100, yLabel: '%', suggestedMin: 0 }),
@@ -727,8 +670,9 @@ function renderFailChart() {
       datasets: [{
         label: 'Failure count',
         data,
-        backgroundColor: 'rgba(239,68,68,.7)',
-        borderRadius: 4,
+        backgroundColor: 'rgba(234,90,110,.75)',
+        borderRadius: 2,
+        maxBarThickness: 16,
       }]
     },
     options: hBarOptions('Failures'),
@@ -768,8 +712,9 @@ function renderFlakyChart() {
       datasets: [{
         label: 'Flaky count',
         data,
-        backgroundColor: 'rgba(245,158,11,.7)',
-        borderRadius: 4,
+        backgroundColor: 'rgba(224,168,63,.75)',
+        borderRadius: 2,
+        maxBarThickness: 16,
       }]
     },
     options: hBarOptions('Times flaky'),
@@ -808,7 +753,7 @@ function renderSpecChart() {
     const pas = specPass[f]  || 0;
     return tot > 0 ? +(pas / tot * 100).toFixed(1) : 0;
   });
-  const colors = data.map(v => v >= 90 ? 'rgba(34,197,94,.7)' : v >= 60 ? 'rgba(245,158,11,.7)' : 'rgba(239,68,68,.7)');
+  const colors = data.map(v => v >= 90 ? 'rgba(63,191,130,.75)' : v >= 60 ? 'rgba(224,168,63,.75)' : 'rgba(234,90,110,.75)');
 
   if (specChartInst) specChartInst.destroy();
   specChartInst = new Chart(document.getElementById('specChart'), {
@@ -819,7 +764,8 @@ function renderSpecChart() {
         label: 'Pass rate %',
         data,
         backgroundColor: colors,
-        borderRadius: 4,
+        borderRadius: 2,
+        maxBarThickness: 16,
       }]
     },
     options: hBarOptions('%', { xMax: 100 }),
@@ -848,35 +794,32 @@ function renderDiff() {
   const latestFailed   = new Set(latestRun.tests.filter(t => t.status === 'failed' || t.status === 'timedOut').map(t => t.fullTitle));
   const previousFailed = new Set(previousRun.tests.filter(t => t.status === 'failed' || t.status === 'timedOut').map(t => t.fullTitle));
 
-  const newFailures       = [...latestFailed].filter(t => !previousFailed.has(t));
-  const persistentFails   = [...latestFailed].filter(t => previousFailed.has(t));
-  const recovered         = [...previousFailed].filter(t => !latestFailed.has(t));
+  const newFailures     = [...latestFailed].filter(t => !previousFailed.has(t));
+  const persistentFails = [...latestFailed].filter(t => previousFailed.has(t));
+  const recovered       = [...previousFailed].filter(t => !latestFailed.has(t));
 
-  function diffTable(items, cls, emptyMsg) {
-    if (items.length === 0) return `<div class="empty" style="min-height:50px;font-size:12px;">${emptyMsg}</div>`;
-    return `
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Test</th></tr></thead>
-          <tbody>
-            ${items.map(t => `<tr><td><span class="badge ${cls}">${cls}</span> ${esc(t)}</td></tr>`).join('')}
-          </tbody>
-        </table>
-      </div>`;
+  function diffList(items, emptyMsg) {
+    if (items.length === 0) return `<div class="diff-empty">${emptyMsg}</div>`;
+    return items.map(t => `<div class="diff-item">${esc(t)}</div>`).join('');
   }
 
   container.innerHTML = `
-    <div class="diff-section">
-      <h4>🔴 New Failures (${newFailures.length}) — failed now, passed last run</h4>
-      ${diffTable(newFailures, 'fail', 'No new failures.')}
-    </div>
-    <div class="diff-section">
-      <h4>🟠 Persistent Failures (${persistentFails.length}) — failed in both runs</h4>
-      ${diffTable(persistentFails, 'fail', 'No persistent failures.')}
-    </div>
-    <div class="diff-section">
-      <h4>🟢 Recovered (${recovered.length}) — passed now, failed last run</h4>
-      ${diffTable(recovered, 'pass', 'No recoveries.')}
+    <div class="diff-grid">
+      <div class="diff-panel">
+        <div class="diff-head"><span class="dot" style="background:var(--fail)"></span>New failures</div>
+        <div class="diff-count">${newFailures.length} — failed now, passed last run</div>
+        ${diffList(newFailures, 'No new failures.')}
+      </div>
+      <div class="diff-panel">
+        <div class="diff-head"><span class="dot" style="background:var(--flaky)"></span>Persistent failures</div>
+        <div class="diff-count">${persistentFails.length} — failed in both runs</div>
+        ${diffList(persistentFails, 'No persistent failures.')}
+      </div>
+      <div class="diff-panel">
+        <div class="diff-head"><span class="dot" style="background:var(--pass)"></span>Recovered</div>
+        <div class="diff-count">${recovered.length} — passed now, failed last run</div>
+        ${diffList(recovered, 'No recoveries.')}
+      </div>
     </div>
   `;
 }
@@ -884,11 +827,15 @@ function renderDiff() {
 // ---------------------------------------------------------------------------
 // Chart helpers
 // ---------------------------------------------------------------------------
+Chart.defaults.font.family = "'IBM Plex Mono', monospace";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#9198a8';
+
 const CHART_DEFAULTS = {
   plugins: { legend: { display: false } },
   scales: {
-    x: { grid: { color: 'rgba(46,50,80,.5)' }, ticks: { color: '#8892b0' } },
-    y: { grid: { color: 'rgba(46,50,80,.5)' }, ticks: { color: '#8892b0' } },
+    x: { grid: { color: '#22262f' }, ticks: { color: '#9198a8' } },
+    y: { grid: { color: '#22262f' }, ticks: { color: '#9198a8' } },
   },
   animation: false,
   maintainAspectRatio: false,
@@ -904,7 +851,7 @@ function chartOptions({ yMax, yLabel, suggestedMin } = {}) {
         ...CHART_DEFAULTS.scales.y,
         max: yMax,
         suggestedMin: suggestedMin ?? undefined,
-        ticks: { color: '#8892b0', callback: v => yLabel ? v + yLabel : v },
+        ticks: { color: '#9198a8', callback: v => yLabel ? v + yLabel : v },
       },
     },
   };
@@ -916,13 +863,13 @@ function hBarOptions(xLabel, { xMax } = {}) {
     indexAxis: 'y',
     scales: {
       x: {
-        grid: { color: 'rgba(46,50,80,.5)' },
-        ticks: { color: '#8892b0', callback: v => xLabel === '%' ? v + '%' : v },
+        grid: { color: '#22262f' },
+        ticks: { color: '#9198a8', callback: v => xLabel === '%' ? v + '%' : v },
         max: xMax,
       },
       y: {
-        grid: { color: 'rgba(46,50,80,.5)' },
-        ticks: { color: '#8892b0', font: { size: 11 } },
+        grid: { color: '#22262f' },
+        ticks: { color: '#eceef2', font: { family: "'Space Grotesk', sans-serif", size: 11.5 } },
       },
     },
     animation: false,
