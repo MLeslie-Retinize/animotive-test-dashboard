@@ -279,7 +279,38 @@
       font-size: 13px; line-height: 1.4; word-break: break-word;
     }
     .diff-item:first-of-type { border-top: none; }
+    button.diff-item {
+      appearance: none; width: 100%; background: transparent; color: var(--text);
+      border: none; text-align: left; cursor: pointer; font-family: inherit;
+    }
+    button.diff-item:hover { color: var(--accent); }
+    button.diff-item:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
     .diff-empty { color: var(--faint); font-size: 13px; padding: 4px 0; }
+
+    /* ---- Test detail dialog ---- */
+    .test-dialog {
+      width: min(720px, calc(100% - 32px)); max-height: min(760px, calc(100vh - 32px));
+      margin: auto; padding: 0; background: var(--surface); color: var(--text);
+      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+    }
+    .test-dialog::backdrop { background: rgba(0, 0, 0, .68); }
+    .test-dialog-header { display: flex; align-items: flex-start; gap: 16px; padding: 20px 22px; border-bottom: 1px solid var(--border); }
+    .test-dialog-title { font-size: 16px; font-weight: 600; line-height: 1.35; flex: 1; word-break: break-word; }
+    .dialog-close { appearance: none; border: 1px solid var(--border); background: var(--surface2); color: var(--text); border-radius: 4px; width: 32px; height: 32px; font-size: 22px; line-height: 1; cursor: pointer; flex: none; }
+    .dialog-close:hover { background: var(--border); }
+    .dialog-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .test-dialog-body { padding: 20px 22px 24px; overflow: auto; max-height: calc(min(760px, 100vh - 32px) - 77px); }
+    .test-detail-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--muted); font-size: 12px; margin-bottom: 20px; }
+    .test-detail-meta strong { color: var(--text); font-weight: 500; }
+    .test-detail-section { margin-top: 20px; }
+    .test-detail-section h3 { color: var(--faint); font-size: 11.5px; font-weight: 500; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; }
+    .test-error { background: var(--bg); border: 1px solid var(--border-soft); color: var(--text); padding: 14px; border-radius: var(--radius); overflow: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .test-history { width: 100%; border-collapse: collapse; min-width: 0; }
+    .test-history td { padding: 8px 0; border-top: 1px solid var(--border-soft); color: var(--muted); font-size: 12.5px; }
+    .test-history tr:first-child td { border-top: none; }
+    .test-history td:last-child { text-align: right; }
+    .test-detail-link { color: var(--accent); text-decoration: none; font-size: 13px; }
+    .test-detail-link:hover { text-decoration: underline; }
 
     /* ---- Loading / empty ---- */
     .loading, .empty {
@@ -410,7 +441,15 @@
 
       <!-- Top failing tests -->
       <div class="chart-box">
-        <h3>Top failing tests</h3>
+        <div class="range-row">
+          <h3 style="margin-bottom:0">Top failing tests</h3>
+          <div class="range-toggle" id="failRangeToggle">
+            <button data-range="14">14 runs</button>
+            <button data-range="30" class="active">30 runs</button>
+            <button data-range="60">60 runs</button>
+            <button data-range="0">All</button>
+          </div>
+        </div>
         <div class="chart-container" style="height:300px">
           <span class="skel skel-chart" id="failSkel"></span>
           <canvas id="failChart"></canvas>
@@ -419,7 +458,15 @@
 
       <!-- Flaky tests -->
       <div class="chart-box">
-        <h3>Flaky tests</h3>
+        <div class="range-row">
+          <h3 style="margin-bottom:0">Flaky tests</h3>
+          <div class="range-toggle" id="flakyRangeToggle">
+            <button data-range="14">14 runs</button>
+            <button data-range="30" class="active">30 runs</button>
+            <button data-range="60">60 runs</button>
+            <button data-range="0">All</button>
+          </div>
+        </div>
         <div class="chart-container" style="height:300px">
           <span class="skel skel-chart" id="flakySkel"></span>
           <canvas id="flakyChart"></canvas>
@@ -492,6 +539,14 @@
 
 <div class="copy-toast" id="copyToast" role="status" aria-live="polite">Commit hash copied</div>
 
+<dialog class="test-dialog" id="testDialog" aria-labelledby="testDialogTitle">
+  <div class="test-dialog-header">
+    <h2 class="test-dialog-title" id="testDialogTitle"></h2>
+    <button class="dialog-close" id="testDialogClose" type="button" aria-label="Close test details">&times;</button>
+  </div>
+  <div class="test-dialog-body" id="testDialogBody"></div>
+</dialog>
+
 <script>
 // ---------------------------------------------------------------------------
 // State
@@ -502,6 +557,8 @@ let runCache = {};   // { id: fullRunObject } — loaded lazily from data/runs/*
 const PAGE_SIZE = 20;
 let currentPage = 0;
 let trendRange = 30; // active range for the pass-rate trend chart (0 = all)
+let failRange = 30;
+let flakyRange = 30;
 
 let trendChartInst  = null;
 let failChartInst   = null;
@@ -556,6 +613,15 @@ let dataLoadFailed = false; // distinguishes "fetch/parse error" from "genuinely
     renderTrendChart();
   });
 
+  bindRangeToggle('failRangeToggle', (range) => {
+    failRange = range;
+    renderFailChart();
+  });
+  bindRangeToggle('flakyRangeToggle', (range) => {
+    flakyRange = range;
+    renderFlakyChart();
+  });
+
   // Click a commit hash in the history table to copy the full SHA.
   document.getElementById('historyBody').addEventListener('click', async (e) => {
     const btn = e.target.closest('.commit-cell');
@@ -576,6 +642,17 @@ let dataLoadFailed = false; // distinguishes "fetch/parse error" from "genuinely
     toast.classList.add('show');
     clearTimeout(toast._hideTimer);
     toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 1600);
+  });
+
+  document.getElementById('diffSection').addEventListener('click', (e) => {
+    const item = e.target.closest('[data-test-title]');
+    if (item) openTestDetail(item.dataset.testTitle);
+  });
+
+  const dialog = document.getElementById('testDialog');
+  document.getElementById('testDialogClose').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
   });
 })();
 
@@ -734,8 +811,7 @@ function renderTrendChart() {
 function renderFailChart() {
   document.getElementById('failSkel')?.remove();
   const counts = {};
-  for (const id of Object.keys(runCache)) {
-    const run = runCache[id];
+  for (const run of getRunsForRange(failRange)) {
     if (!run) continue;
     for (const t of run.tests) {
       if (t.status === 'failed' || t.status === 'timedOut') {
@@ -769,7 +845,10 @@ function renderFailChart() {
       }]
     },
     // Bar labels are truncated for layout; the tooltip shows the full test name.
-    options: hBarOptions('Failures', { fullLabels: fullTitles }),
+    options: hBarOptions('Failures', {
+      fullLabels: fullTitles,
+      onBarClick: index => openTestDetail(fullTitles[index]),
+    }),
   });
 }
 
@@ -779,8 +858,7 @@ function renderFailChart() {
 function renderFlakyChart() {
   document.getElementById('flakySkel')?.remove();
   const counts = {};
-  for (const id of Object.keys(runCache)) {
-    const run = runCache[id];
+  for (const run of getRunsForRange(flakyRange)) {
     if (!run) continue;
     for (const t of run.tests) {
       if (t.flaky) {
@@ -898,7 +976,7 @@ function renderDiff() {
 
   function diffList(items, emptyMsg) {
     if (items.length === 0) return `<div class="diff-empty">${emptyMsg}</div>`;
-    return items.map(t => `<div class="diff-item">${esc(t)}</div>`).join('');
+    return items.map(t => `<button class="diff-item" type="button" data-test-title="${esc(t)}">${esc(t)}</button>`).join('');
   }
 
   container.innerHTML = `
@@ -920,6 +998,47 @@ function renderDiff() {
       </div>
     </div>
   `;
+}
+
+// ---------------------------------------------------------------------------
+// Test detail dialog
+// ---------------------------------------------------------------------------
+function openTestDetail(fullTitle) {
+  const history = allRuns
+    .map(run => ({ run, test: runCache[run.id]?.tests.find(t => t.fullTitle === fullTitle) }))
+    .filter(entry => entry.test);
+  const latest = history[0];
+  if (!latest) return;
+
+  const { run, test } = latest;
+  const dialog = document.getElementById('testDialog');
+  document.getElementById('testDialogTitle').textContent = test.title || fullTitle;
+
+  const state = test.flaky ? 'flaky' : test.status;
+  const status = `<span class="badge ${esc(state)}">${esc(state)}</span>`;
+  const error = test.errorMessage
+    ? `<pre class="test-error">${esc(test.errorMessage)}</pre>`
+    : '<div class="diff-empty">No error message was captured for this run.</div>';
+  const records = history.map(({ run: historyRun, test: historyTest }) => {
+    const historyState = historyTest.flaky ? 'flaky' : historyTest.status;
+    return `<tr><td>${fmtDate(historyRun.timestamp)}</td><td>${esc(historyRun.commit.slice(0, 7))}</td><td><span class="badge ${esc(historyState)}">${esc(historyState)}</span></td></tr>`;
+  }).join('');
+  const workflow = run.workflowUrl
+    ? `<a class="test-detail-link" href="${esc(run.workflowUrl)}" target="_blank" rel="noopener">Open workflow run ↗</a>`
+    : '';
+
+  document.getElementById('testDialogBody').innerHTML = `
+    <div class="test-detail-meta">
+      <span><strong>File:</strong> ${esc(test.file || 'Unknown')}</span>
+      <span><strong>Duration:</strong> ${formatDuration(test.duration)}</span>
+      <span><strong>Retries:</strong> ${test.retries || 0}</span>
+      <span><strong>Latest:</strong> ${status}</span>
+    </div>
+    ${workflow}
+    <div class="test-detail-section"><h3>Failure output</h3>${error}</div>
+    <div class="test-detail-section"><h3>Loaded run history</h3><table class="test-history"><tbody>${records}</tbody></table></div>
+  `;
+  dialog.showModal();
 }
 
 // ---------------------------------------------------------------------------
@@ -955,10 +1074,13 @@ function chartOptions({ yMax, yLabel, suggestedMin } = {}) {
   };
 }
 
-function hBarOptions(xLabel, { xMax, fullLabels } = {}) {
+function hBarOptions(xLabel, { xMax, fullLabels, onBarClick } = {}) {
   return {
     ...CHART_DEFAULTS,
     indexAxis: 'y',
+    onClick: (_, elements) => {
+      if (elements.length > 0) onBarClick?.(elements[0].index);
+    },
     scales: {
       x: {
         grid: { color: '#22262f' },
@@ -1007,6 +1129,26 @@ function esc(str) {
 
 function truncate(str, n) {
   return str.length > n ? '…' + str.slice(-(n - 1)) : str;
+}
+
+function formatDuration(milliseconds) {
+  if (!milliseconds) return '—';
+  return milliseconds >= 1000 ? `${(milliseconds / 1000).toFixed(1)}s` : `${milliseconds}ms`;
+}
+
+function getRunsForRange(range) {
+  const selectedRuns = range > 0 ? allRuns.slice(0, range) : allRuns;
+  return selectedRuns.map(run => runCache[run.id]).filter(Boolean);
+}
+
+function bindRangeToggle(id, onChange) {
+  document.getElementById(id).addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    document.querySelectorAll(`#${id} button`).forEach(button => button.classList.remove('active'));
+    btn.classList.add('active');
+    onChange(parseInt(btn.dataset.range, 10));
+  });
 }
 </script>
 </body>
