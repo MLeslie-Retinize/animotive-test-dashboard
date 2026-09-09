@@ -166,6 +166,7 @@
     .chart-box.wide { grid-column: 1 / -1; }
     .chart-container { position: relative; }
     .chart-container canvas { max-width: 100%; }
+    .chart-container .skel-chart { position: absolute; inset: 0; }
 
     @media (max-width: 860px) {
       .charts-grid { grid-template-columns: 1fr; }
@@ -203,12 +204,32 @@
       color: var(--faint);
       white-space: nowrap;
       border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 3;
     }
     tbody tr { border-top: 1px solid var(--border-soft); }
     tbody tr:first-child { border-top: none; }
     tbody tr:hover { background: var(--surface2); }
     tbody td { padding: 12px 14px; font-size: 13px; color: var(--text); }
     tbody td.mono { font-size: 12px; color: var(--muted); }
+    .commit-cell {
+      appearance: none; border: none; background: transparent; color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px; cursor: pointer;
+      padding: 4px 6px; margin: -4px -6px; border-radius: 4px;
+    }
+    .commit-cell:hover { background: var(--surface2); color: var(--text); }
+    .commit-cell:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .commit-cell.copied { color: var(--pass); }
+
+    .copy-toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(8px);
+      background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+      font-size: 13px; padding: 9px 16px; border-radius: 20px;
+      opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease;
+      z-index: 10;
+    }
+    .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     tbody td a { color: var(--accent); text-decoration: none; border-radius: 6px; }
     tbody td a:hover { text-decoration: underline; }
     tbody td a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -265,6 +286,27 @@
       display: flex; align-items: center; justify-content: center;
       min-height: 100px; color: var(--faint); font-size: 13px;
     }
+    .empty.error { color: var(--fail); }
+
+    /* Skeleton shimmer used in place of "Loading…" while data fetches */
+    @keyframes skeleton-pulse {
+      0%   { background-position: -200px 0; }
+      100% { background-position: calc(200px + 100%) 0; }
+    }
+    .skel {
+      display: block;
+      border-radius: var(--radius);
+      background: linear-gradient(90deg, var(--surface2) 25%, var(--border) 37%, var(--surface2) 63%);
+      background-size: 400px 100%;
+      animation: skeleton-pulse 1.6s ease-in-out infinite;
+    }
+    .skel-rate   { width: 160px; height: 62px; margin-bottom: 10px; }
+    .skel-pill   { width: 90px; height: 24px; border-radius: 20px; }
+    .skel-line   { width: 260px; height: 15px; margin-bottom: 14px; }
+    .skel-chip   { width: 100px; height: 48px; border-radius: var(--radius); }
+    .skel-chart  { width: 100%; height: 100%; }
+    .skel-row    { width: 100%; height: 15px; }
+    .hero-details .skel-line { width: 320px; }
 
     footer {
       color: var(--faint); font-size: 12px; padding-top: 28px; margin-top: 8px;
@@ -322,7 +364,7 @@
     <h1>Animotive</h1>
     <span class="brand-sub">Test Dashboard</span>
   </div>
-  <span class="subtitle" id="lastUpdated">Loading…</span>
+  <span class="subtitle" id="lastUpdated" aria-live="polite">Loading…</span>
 </header>
 
 <main>
@@ -331,12 +373,15 @@
   <section class="hero">
     <div class="hero-figure">
       <div class="label">Latest run — pass rate</div>
-      <div class="rate mono" id="heroRate">—</div>
-      <div class="status-pill" id="heroStatus">Loading…</div>
+      <div class="rate mono" id="heroRate"><span class="skel skel-rate"></span></div>
+      <div class="status-pill" id="heroStatus" style="background:transparent;padding:0"><span class="skel skel-pill"></span></div>
     </div>
     <div class="hero-details">
-      <div class="hero-run-line mono" id="heroMeta">Loading…</div>
-      <div class="stat-row" id="heroStats"></div>
+      <div class="hero-run-line mono" id="heroMeta"><span class="skel skel-line"></span></div>
+      <div class="stat-row" id="heroStats">
+        <span class="skel skel-chip"></span><span class="skel skel-chip"></span>
+        <span class="skel skel-chip"></span><span class="skel skel-chip"></span><span class="skel skel-chip"></span>
+      </div>
     </div>
   </section>
 
@@ -358,6 +403,7 @@
           </div>
         </div>
         <div class="chart-container" style="height:220px">
+          <span class="skel skel-chart" id="trendSkel"></span>
           <canvas id="trendChart"></canvas>
         </div>
       </div>
@@ -366,6 +412,7 @@
       <div class="chart-box">
         <h3>Top failing tests</h3>
         <div class="chart-container" style="height:300px">
+          <span class="skel skel-chart" id="failSkel"></span>
           <canvas id="failChart"></canvas>
         </div>
       </div>
@@ -374,6 +421,7 @@
       <div class="chart-box">
         <h3>Flaky tests</h3>
         <div class="chart-container" style="height:300px">
+          <span class="skel skel-chart" id="flakySkel"></span>
           <canvas id="flakyChart"></canvas>
         </div>
       </div>
@@ -382,6 +430,7 @@
       <div class="chart-box wide">
         <h3>Pass rate by spec file</h3>
         <div class="chart-container" style="height:260px">
+          <span class="skel skel-chart" id="specSkel"></span>
           <canvas id="specChart"></canvas>
         </div>
       </div>
@@ -394,7 +443,11 @@
     <div class="section-title">Failure diff — latest vs previous run</div>
     <div class="section-sub">What changed between the two most recent runs.</div>
     <div id="diffSection">
-      <div class="loading">Loading…</div>
+      <div class="diff-grid">
+        <div class="diff-panel"><span class="skel skel-line"></span></div>
+        <div class="diff-panel"><span class="skel skel-line"></span></div>
+        <div class="diff-panel"><span class="skel skel-line"></span></div>
+      </div>
     </div>
   </div>
 
@@ -419,7 +472,11 @@
           </tr>
         </thead>
         <tbody id="historyBody">
-          <tr><td colspan="10" class="loading">Loading…</td></tr>
+          <tr><td colspan="10"><span class="skel skel-row"></span></td></tr>
+          <tr><td colspan="10"><span class="skel skel-row"></span></td></tr>
+          <tr><td colspan="10"><span class="skel skel-row"></span></td></tr>
+          <tr><td colspan="10"><span class="skel skel-row"></span></td></tr>
+          <tr><td colspan="10"><span class="skel skel-row"></span></td></tr>
         </tbody>
       </table>
     </div>
@@ -432,6 +489,8 @@
   <span>Animotive Test Dashboard</span>
   <span id="footerRunCount"></span>
 </footer>
+
+<div class="copy-toast" id="copyToast" role="status" aria-live="polite">Commit hash copied</div>
 
 <script>
 // ---------------------------------------------------------------------------
@@ -452,14 +511,18 @@ let specChartInst   = null;
 // ---------------------------------------------------------------------------
 // Boot
 // ---------------------------------------------------------------------------
+let dataLoadFailed = false; // distinguishes "fetch/parse error" from "genuinely no runs yet"
+
 (async function init() {
   try {
     const res = await fetch('data/index.json');
+    if (!res.ok) throw new Error(`data/index.json responded ${res.status}`);
     allRuns = await res.json();
     // Sort newest-first
     allRuns.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
   } catch (e) {
     allRuns = [];
+    dataLoadFailed = true;
   }
 
   renderSummaryCards();
@@ -479,7 +542,7 @@ let specChartInst   = null;
   document.getElementById('lastUpdated').textContent =
     allRuns.length > 0
       ? `Updated ${fmtDate(allRuns[0].timestamp)}`
-      : 'No runs yet';
+      : (dataLoadFailed ? 'Failed to load data' : 'No runs yet');
 
   document.getElementById('footerRunCount').textContent =
     allRuns.length > 0 ? `${allRuns.length} runs recorded` : '';
@@ -491,6 +554,28 @@ let specChartInst   = null;
     btn.classList.add('active');
     trendRange = parseInt(btn.dataset.range, 10);
     renderTrendChart();
+  });
+
+  // Click a commit hash in the history table to copy the full SHA.
+  document.getElementById('historyBody').addEventListener('click', async (e) => {
+    const btn = e.target.closest('.commit-cell');
+    if (!btn) return;
+    const hash = btn.dataset.commit;
+    try {
+      await navigator.clipboard.writeText(hash);
+    } catch (err) {
+      return; // clipboard API unavailable/blocked — fail silently, link still shows the hash
+    }
+    btn.classList.add('copied');
+    const original = btn.textContent;
+    btn.textContent = 'Copied';
+    setTimeout(() => { btn.classList.remove('copied'); btn.textContent = original; }, 1200);
+
+    const toast = document.getElementById('copyToast');
+    toast.textContent = `Copied ${hash.slice(0, 7)}`;
+    toast.classList.add('show');
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 1600);
   });
 })();
 
@@ -519,14 +604,17 @@ async function loadRunFiles(ids) {
 function renderSummaryCards() {
   const rateEl   = document.getElementById('heroRate');
   const statusEl = document.getElementById('heroStatus');
+  statusEl.removeAttribute('style'); // clear the transparent/no-padding skeleton state
   const metaEl   = document.getElementById('heroMeta');
   const statsEl  = document.getElementById('heroStats');
 
   if (allRuns.length === 0) {
     rateEl.textContent = '—';
-    statusEl.textContent = 'No runs yet';
-    statusEl.className = 'status-pill';
-    metaEl.textContent = 'No runs recorded yet.';
+    statusEl.textContent = dataLoadFailed ? 'Couldn\u2019t load' : 'No runs yet';
+    statusEl.className = 'status-pill' + (dataLoadFailed ? ' fail' : '');
+    metaEl.textContent = dataLoadFailed
+      ? 'Couldn\u2019t reach data/index.json — check the network and try refreshing.'
+      : 'No runs recorded yet.';
     statsEl.innerHTML = '';
     return;
   }
@@ -561,7 +649,9 @@ function renderSummaryCards() {
 function renderHistory() {
   const tbody = document.getElementById('historyBody');
   if (allRuns.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="10" class="empty">No runs recorded yet.</td></tr>';
+    tbody.innerHTML = dataLoadFailed
+      ? '<tr><td colspan="10" class="empty error">Couldn\u2019t load run history — check the network and try refreshing.</td></tr>'
+      : '<tr><td colspan="10" class="empty">No runs recorded yet.</td></tr>';
     return;
   }
 
@@ -577,7 +667,7 @@ function renderHistory() {
       <tr>
         <td class="mono">${fmtDate(r.timestamp)}</td>
         <td>${esc(r.branch)}</td>
-        <td class="mono">${esc(r.commit.slice(0,7))}</td>
+        <td class="mono"><button class="commit-cell" type="button" data-commit="${esc(r.commit)}" title="Copy full commit hash">${esc(r.commit.slice(0,7))}</button></td>
         <td><span class="badge ${r.status}">${r.status}</span></td>
         <td><span class="count pass">${s.passed}</span></td>
         <td><span class="count fail">${s.failed}</span></td>
@@ -607,6 +697,7 @@ function renderPagination() {
 // Pass-rate Trend Chart
 // ---------------------------------------------------------------------------
 function renderTrendChart() {
+  document.getElementById('trendSkel')?.remove();
   const runs = trendRange > 0 ? allRuns.slice(0, trendRange) : allRuns;
   const sorted = [...runs].reverse(); // chronological for chart x-axis
 
@@ -641,6 +732,7 @@ function renderTrendChart() {
 // Top Failing Tests Chart
 // ---------------------------------------------------------------------------
 function renderFailChart() {
+  document.getElementById('failSkel')?.remove();
   const counts = {};
   for (const id of Object.keys(runCache)) {
     const run = runCache[id];
@@ -659,6 +751,7 @@ function renderFailChart() {
     return;
   }
 
+  const fullTitles = sorted.map(([k]) => k);
   const labels = sorted.map(([k]) => truncate(k, 55));
   const data   = sorted.map(([, v]) => v);
 
@@ -675,7 +768,8 @@ function renderFailChart() {
         maxBarThickness: 16,
       }]
     },
-    options: hBarOptions('Failures'),
+    // Bar labels are truncated for layout; the tooltip shows the full test name.
+    options: hBarOptions('Failures', { fullLabels: fullTitles }),
   });
 }
 
@@ -683,6 +777,7 @@ function renderFailChart() {
 // Flaky Tests Chart
 // ---------------------------------------------------------------------------
 function renderFlakyChart() {
+  document.getElementById('flakySkel')?.remove();
   const counts = {};
   for (const id of Object.keys(runCache)) {
     const run = runCache[id];
@@ -701,6 +796,7 @@ function renderFlakyChart() {
     return;
   }
 
+  const fullTitles = sorted.map(([k]) => k);
   const labels = sorted.map(([k]) => truncate(k, 55));
   const data   = sorted.map(([, v]) => v);
 
@@ -717,7 +813,8 @@ function renderFlakyChart() {
         maxBarThickness: 16,
       }]
     },
-    options: hBarOptions('Times flaky'),
+    // Bar labels are truncated for layout; the tooltip shows the full test name.
+    options: hBarOptions('Times flaky', { fullLabels: fullTitles }),
   });
 }
 
@@ -725,6 +822,7 @@ function renderFlakyChart() {
 // Per-spec Pass Rate Chart
 // ---------------------------------------------------------------------------
 function renderSpecChart() {
+  document.getElementById('specSkel')?.remove();
   const specPass  = {};
   const specTotal = {};
 
@@ -857,7 +955,7 @@ function chartOptions({ yMax, yLabel, suggestedMin } = {}) {
   };
 }
 
-function hBarOptions(xLabel, { xMax } = {}) {
+function hBarOptions(xLabel, { xMax, fullLabels } = {}) {
   return {
     ...CHART_DEFAULTS,
     indexAxis: 'y',
@@ -875,7 +973,16 @@ function hBarOptions(xLabel, { xMax } = {}) {
     animation: false,
     maintainAspectRatio: false,
     responsive: true,
-    plugins: { legend: { display: false } },
+    plugins: {
+      legend: { display: false },
+      // Show the full (untruncated) test name in the tooltip title, falling
+      // back to the axis label when no lookup array was provided.
+      tooltip: fullLabels ? {
+        callbacks: {
+          title: (items) => fullLabels[items[0].dataIndex] || items[0].label,
+        },
+      } : undefined,
+    },
   };
 }
 
