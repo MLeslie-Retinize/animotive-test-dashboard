@@ -699,7 +699,8 @@ function renderSummaryCards() {
 
   const latest = allRuns[0];
   const s = latest.stats;
-  const passRate = s.total > 0 ? ((s.passed + s.flaky) / s.total * 100) : null;
+  const ran = s.total - s.skipped;
+  const passRate = ran > 0 ? ((s.passed + s.flaky) / ran * 100) : null;
 
   rateEl.textContent = passRate !== null ? passRate.toFixed(1) + '%' : '—';
   rateEl.className = 'rate mono' + (passRate !== null && passRate < 90 ? ' warn' : '') + (passRate !== null && passRate < 75 ? ' bad' : '');
@@ -782,7 +783,8 @@ function renderTrendChart() {
   const labels = sorted.map(r => r.date);
   const data   = sorted.map(r => {
     const s = r.stats;
-    return s.total > 0 ? +((s.passed + s.flaky) / s.total * 100).toFixed(1) : 0;
+    const ran = s.total - s.skipped;
+    return ran > 0 ? +((s.passed + s.flaky) / ran * 100).toFixed(1) : 0;
   });
 
   if (trendChartInst) trendChartInst.destroy();
@@ -909,6 +911,7 @@ function renderSpecChart() {
     const run = runCache[id];
     if (!run) continue;
     for (const t of run.tests) {
+      if (t.status === 'skipped') continue;
       const file = t.file || 'unknown';
       specTotal[file] = (specTotal[file] || 0) + 1;
       if (t.status === 'passed' || t.flaky) {
